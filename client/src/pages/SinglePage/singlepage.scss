@@ -1,13 +1,17 @@
 .singlePage{
     display: flex;
-    height: 100%;
+    height: 100vh;
 
     .details{
         flex:3;
         .wrapper{
             padding-right: 50px;
+            display: flex;
+            flex-direction: column;
 
             .info{
+                margin-top: 30px;
+                overflow-y: auto;
                 .top{
                     display: flex;
                     justify-content: space-between;
@@ -58,7 +62,7 @@
                     }
                 }
                 .bottom{
-                    margin-top: 50px;
+                    margin-top: 20px;
                     color: #555;
                     line-height: 20px;
                 }

@@ -6,7 +6,7 @@ import { singlePostData, userData } from "../../lib/dummydata";
 function SinglePage(){
     return(
         <div className="singlePage">
-            <div className="details">
+            <div className="details" >
                 <div className="wrapper">
                     <Slider images={singlePostData.images}/>
                     <div className="info">
