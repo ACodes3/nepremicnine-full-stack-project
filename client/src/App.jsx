@@ -7,6 +7,10 @@ import {
 import ListPage from "./pages/ListPage/ListPage";
 import Layout from "./pages/Layout/Layout";
 import SinglePage from "./pages/SinglePage/SinglePage";
+import ProfilePage from "./pages/ProfilePage/ProfilePage";
+import AboutPage from "./pages/AboutPage/AboutPage";
+import ContactPage from "./pages/ContactPage/ContactPage";
+import AgentsPage from "./pages/AgentsPage/AgentsPage";
 
 function App() {
 
@@ -21,12 +25,28 @@ function App() {
               element: <HomePage/>
             },
             {
+              path: "/about",
+              element: <AboutPage/>
+            },
+            {
+              path: "/contact",
+              element: <ContactPage/>
+            },
+            {
+              path: "/agents",
+              element: <AgentsPage/>
+            },
+            {
               path: "/list",
               element: <ListPage/>
             },
             {
               path: "/:id",
               element: <SinglePage/>
+            },
+            {
+              path: "/profile",
+              element: <ProfilePage/>
             },
           ]
     },
