@@ -14,6 +14,9 @@ import AgentsPage from "./pages/AgentsPage/AgentsPage";
 import AdminDashboard from "./AdminDashboard/AdminDashboard";
 import AgentsDashboard from "./AdminDashboard/AgentsDashboard/AgentsDashboard";
 import ListingsDashboard from "./AdminDashboard/ListingsDashboard/ListingsDashboard";
+import OfficeDashboard from "./AdminDashboard/OfficeDashboard/OfficeDashboard";
+import AccountDashboard from "./AdminDashboard/AccountDashboard/AccountDashboard";
+import SettingsDashboard from "./AdminDashboard/SettingsDashboard/SettingsDashboard";
 
 function App() {
 
@@ -68,15 +71,15 @@ function App() {
                 },
                 {
                   path: "/dashboard/offices",
-                  element: <AdminDashboard/>
+                  element: <OfficeDashboard/>
                 },
                 {
                   path: "/dashboard/account",
-                  element: <AdminDashboard/>
+                  element: <AccountDashboard/>
                 },
                 {
                   path: "/dashboard/settings",
-                  element: <AdminDashboard/>
+                  element: <SettingsDashboard/>
                 }
               ]
             },
