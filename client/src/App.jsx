@@ -12,6 +12,7 @@ import AboutPage from "./pages/AboutPage/AboutPage";
 import ContactPage from "./pages/ContactPage/ContactPage";
 import AgentsPage from "./pages/AgentsPage/AgentsPage";
 import AdminDashboard from "./AdminDashboard/AdminDashboard";
+import AgentsDashboard from "./AdminDashboard/AgentsDashboard/AgentsDashboard";
 
 function App() {
 
@@ -58,7 +59,7 @@ function App() {
                 },
                 {
                   path: "/dashboard/agents",
-                  element: <AdminDashboard/>
+                  element: <AgentsDashboard/>
                 },
                 {
                   path: "/dashboard/listings",
