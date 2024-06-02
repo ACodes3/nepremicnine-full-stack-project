@@ -1,10 +1,13 @@
 import "../Components/ContentMain/ContentMain.css";
 import React from "react";
+import ListPage from "./ListPage";
 
 const ContentMain = () => {
   return (
     <div>
-      <h1 style={{color: "white"}}>Listings</h1>
+      <h1>
+        <ListPage/>
+      </h1>
     </div>
   );
 };
