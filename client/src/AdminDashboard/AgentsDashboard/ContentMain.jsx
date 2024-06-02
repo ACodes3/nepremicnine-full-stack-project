@@ -1,10 +1,14 @@
+import AgentsCard from "../Components/AgentsCard/AgentsCard";
 import "../Components/ContentMain/ContentMain.css";
 import React from 'react'
 
 const ContentMain = () => {
   return (
-    <div>
-      <h1 style={{color: "white"}}>Agents</h1>
+    <div style={{display: "flex", flexWrap: "wrap"}}>
+        <AgentsCard/>
+        <AgentsCard/>
+        <AgentsCard/>
+        <AgentsCard/>
     </div>
   )
 }
