@@ -51,7 +51,32 @@ function App() {
             },
             {
               path: "/dashboard",
-              element: <AdminDashboard/>
+              children: [
+                {
+                  path: "/dashboard",
+                  element: <AdminDashboard/>
+                },
+                {
+                  path: "/dashboard/agents",
+                  element: <AdminDashboard/>
+                },
+                {
+                  path: "/dashboard/listings",
+                  element: <ListPage/>
+                },
+                {
+                  path: "/dashboard/offices",
+                  element: <AdminDashboard/>
+                },
+                {
+                  path: "/dashboard/account",
+                  element: <AdminDashboard/>
+                },
+                {
+                  path: "/dashboard/settings",
+                  element: <AdminDashboard/>
+                }
+              ]
             },
           ]
     },

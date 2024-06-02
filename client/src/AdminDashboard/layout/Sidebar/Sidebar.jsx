@@ -17,8 +17,17 @@ const Sidebar = () => {
     }
   }, [isSidebarOpen]);
 
-  const handleLinkClick = (event, idx) => {
-    event.preventDefault();
+  useEffect(() => {
+    // Extract the full URL
+    const currentUrl = window.location.href;
+    // Find the matching navigation link
+    const activeLink = navigationLinks.find(link => currentUrl === `${window.location.origin}${link.url}`);
+    if (activeLink) {
+      setActiveLinkIdx(activeLink.id);
+    }
+  }, []);
+
+  const handleLinkClick = (idx) => {
     setActiveLinkIdx(idx);
   };
 
@@ -37,9 +46,9 @@ const Sidebar = () => {
             navigationLinks.map((navigationLink) => (
               <li className="nav-item" key={navigationLink.id}>
                 <a 
-                  href="#" 
+                  href={navigationLink.url} 
                   className={`nav-link ${navigationLink.id === activeLinkIdx ? 'active' : ''}`}
-                  onClick={(event) => handleLinkClick(event, navigationLink.id)}
+                  onClick={() => handleLinkClick(navigationLink.id)}
                 >
                   <img src={navigationLink.image} className="nav-link-icon" alt={navigationLink.title} />
                   <span className="nav-link-text">{navigationLink.title}</span>
