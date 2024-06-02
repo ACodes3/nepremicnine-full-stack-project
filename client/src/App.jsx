@@ -13,6 +13,7 @@ import ContactPage from "./pages/ContactPage/ContactPage";
 import AgentsPage from "./pages/AgentsPage/AgentsPage";
 import AdminDashboard from "./AdminDashboard/AdminDashboard";
 import AgentsDashboard from "./AdminDashboard/AgentsDashboard/AgentsDashboard";
+import ListingsDashboard from "./AdminDashboard/ListingsDashboard/ListingsDashboard";
 
 function App() {
 
@@ -63,7 +64,7 @@ function App() {
                 },
                 {
                   path: "/dashboard/listings",
-                  element: <ListPage/>
+                  element: <ListingsDashboard/>
                 },
                 {
                   path: "/dashboard/offices",
