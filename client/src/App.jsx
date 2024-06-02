@@ -11,6 +11,7 @@ import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import AboutPage from "./pages/AboutPage/AboutPage";
 import ContactPage from "./pages/ContactPage/ContactPage";
 import AgentsPage from "./pages/AgentsPage/AgentsPage";
+import AdminDashboard from "./AdminDashboard/AdminDashboard";
 
 function App() {
 
@@ -47,6 +48,10 @@ function App() {
             {
               path: "/profile",
               element: <ProfilePage/>
+            },
+            {
+              path: "/dashboard",
+              element: <AdminDashboard/>
             },
           ]
     },
