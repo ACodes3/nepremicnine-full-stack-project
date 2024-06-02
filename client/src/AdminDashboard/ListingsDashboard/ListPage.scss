@@ -6,6 +6,7 @@
     overflow: hidden; 
     background-color: #fcf5f3;
     padding: 20px;
+    overflow-x: hidden;
 
     .listContainer {
         flex: 3;
@@ -22,6 +23,7 @@
             overflow-y: auto; 
             height: 100%; 
             padding-bottom: 50px;
+            overflow-x: hidden;
         }
     }
 
