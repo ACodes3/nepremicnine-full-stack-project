@@ -2,11 +2,12 @@ import { iconsImgs } from "../utils/images";
 import { personsImgs } from "../utils/images";
 
 export const navigationLinks = [
-    { id: 1, title: 'Agents', image: iconsImgs.home },
-    { id: 2, title: 'Offices', image: iconsImgs.budget },
-    { id: 3, title: 'Listings', image: iconsImgs.plane },
-    { id: 9, title: 'Account', image: iconsImgs.user },
-    { id: 10, title: 'Settings', image: iconsImgs.gears }
+    { id: 1, title: 'Dashboard', image: iconsImgs.home },
+    { id: 2, title: 'Agents', image: iconsImgs.wallet },
+    { id: 3, title: 'Offices', image: iconsImgs.budget },
+    { id: 4, title: 'Listings', image: iconsImgs.plane },
+    { id: 5, title: 'Account', image: iconsImgs.user },
+    { id: 6, title: 'Settings', image: iconsImgs.gears }
 ];
 
 export const transactions = [
