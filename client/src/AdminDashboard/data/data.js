@@ -4,10 +4,11 @@ import { personsImgs } from "../utils/images";
 export const navigationLinks = [
     { id: 1, title: 'Dashboard', image: iconsImgs.home, url: '/dashboard' },
     { id: 2, title: 'Agents', image: iconsImgs.wallet, url: '/dashboard/agents' },
-    { id: 3, title: 'Offices', image: iconsImgs.budget, url: '/dashboard/offices' },
-    { id: 4, title: 'Listings', image: iconsImgs.plane, url: '/dashboard/listings' },
-    { id: 5, title: 'Account', image: iconsImgs.user, url: '/dashboard/account' },
-    { id: 6, title: 'Settings', image: iconsImgs.gears, url: '/dashboard/settings' }
+    { id: 3, title: 'Branch Managers', image: iconsImgs.wallet, url: '/dashboard/managers' },
+    { id: 4, title: 'Offices', image: iconsImgs.budget, url: '/dashboard/offices' },
+    { id: 5, title: 'Listings', image: iconsImgs.plane, url: '/dashboard/listings' },
+    { id: 6, title: 'Account', image: iconsImgs.user, url: '/dashboard/account' },
+    { id: 7, title: 'Settings', image: iconsImgs.gears, url: '/dashboard/settings' }
 ];
 
 export const transactions = [

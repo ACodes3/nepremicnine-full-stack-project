@@ -1,9 +1,6 @@
 import HomePage from "./pages/HomePage/HomePAge";
 
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ListPage from "./pages/ListPage/ListPage";
 import Layout from "./pages/Layout/Layout";
 import SinglePage from "./pages/SinglePage/SinglePage";
@@ -17,83 +14,84 @@ import ListingsDashboard from "./AdminDashboard/ListingsDashboard/ListingsDashbo
 import OfficeDashboard from "./AdminDashboard/OfficeDashboard/OfficeDashboard";
 import AccountDashboard from "./AdminDashboard/AccountDashboard/AccountDashboard";
 import SettingsDashboard from "./AdminDashboard/SettingsDashboard/SettingsDashboard";
+import ManagersDashboard from "./AdminDashboard/ManagersDashboard/ManagersDashboard";
 
 function App() {
-
   const router = createBrowserRouter([
     {
       path: "/",
-      element: 
-          <Layout/>,
-          children:[
-            {
-              path: "/",
-              element: <HomePage/>
-            },
-            {
-              path: "/about",
-              element: <AboutPage/>
-            },
-            {
-              path: "/contact",
-              element: <ContactPage/>
-            },
-            {
-              path: "/agents",
-              element: <AgentsPage/>
-            },
-            {
-              path: "/list",
-              element: <ListPage/>
-            },
-            {
-              path: "/:id",
-              element: <SinglePage/>
-            },
-            {
-              path: "/profile",
-              element: <ProfilePage/>
-            },
+      element: <Layout />,
+      children: [
+        {
+          path: "/",
+          element: <HomePage />,
+        },
+        {
+          path: "/about",
+          element: <AboutPage />,
+        },
+        {
+          path: "/contact",
+          element: <ContactPage />,
+        },
+        {
+          path: "/agents",
+          element: <AgentsPage />,
+        },
+        {
+          path: "/list",
+          element: <ListPage />,
+        },
+        {
+          path: "/:id",
+          element: <SinglePage />,
+        },
+        {
+          path: "/profile",
+          element: <ProfilePage />,
+        },
+        {
+          path: "/dashboard",
+          children: [
             {
               path: "/dashboard",
-              children: [
-                {
-                  path: "/dashboard",
-                  element: <AdminDashboard/>
-                },
-                {
-                  path: "/dashboard/agents",
-                  element: <AgentsDashboard/>
-                },
-                {
-                  path: "/dashboard/listings",
-                  element: <ListingsDashboard/>
-                },
-                {
-                  path: "/dashboard/offices",
-                  element: <OfficeDashboard/>
-                },
-                {
-                  path: "/dashboard/account",
-                  element: <AccountDashboard/>
-                },
-                {
-                  path: "/dashboard/settings",
-                  element: <SettingsDashboard/>
-                }
-              ]
+              element: <AdminDashboard />,
             },
-          ]
+            {
+              path: "/dashboard/agents",
+              element: <AgentsDashboard />,
+            },
+            {
+              path: "/dashboard/managers",
+              element: <ManagersDashboard />,
+            },
+            {
+              path: "/dashboard/listings",
+              element: <ListingsDashboard />,
+            },
+            {
+              path: "/dashboard/offices",
+              element: <OfficeDashboard />,
+            },
+            {
+              path: "/dashboard/account",
+              element: <AccountDashboard />,
+            },
+            {
+              path: "/dashboard/settings",
+              element: <SettingsDashboard />,
+            },
+          ],
+        },
+      ],
     },
     {
       path: "/list",
-      element: <ListPage/>,
+      element: <ListPage />,
     },
   ]);
 
-  return (
-   <RouterProvider router={router} />
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
