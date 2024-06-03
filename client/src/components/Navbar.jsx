@@ -17,6 +17,7 @@ function Navbar() {
         <Link to="/about">About</Link>
         <Link to="/contact">Contact</Link>
         <Link to="/agents">Agents</Link>
+        <Link to="/offices">Offices</Link>
       </div>
       <div className="right">
         {user ? (
@@ -47,6 +48,7 @@ function Navbar() {
           <Link to="/about">About</Link>
           <Link to="/contact">Contact</Link>
           <Link to="/agents">Agents</Link>
+          <Link to="/offices">Offices</Link>
           <Link to="/sign-in">Sign in</Link>
           <Link to="/sign-up">Sign up</Link>
         </div>

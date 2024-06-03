@@ -15,6 +15,7 @@ import OfficeDashboard from "./AdminDashboard/OfficeDashboard/OfficeDashboard";
 import AccountDashboard from "./AdminDashboard/AccountDashboard/AccountDashboard";
 import SettingsDashboard from "./AdminDashboard/SettingsDashboard/SettingsDashboard";
 import ManagersDashboard from "./AdminDashboard/ManagersDashboard/ManagersDashboard";
+import OfficesPage from "./pages/OfficesPage/OfficesPage";
 
 function App() {
   const router = createBrowserRouter([
@@ -37,6 +38,10 @@ function App() {
         {
           path: "/agents",
           element: <AgentsPage />,
+        },
+        {
+          path: "/offices",
+          element: <OfficesPage />,
         },
         {
           path: "/list",

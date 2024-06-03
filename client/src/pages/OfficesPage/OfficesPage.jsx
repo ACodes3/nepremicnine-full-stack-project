@@ -1,16 +1,12 @@
 import AgentsCard from "../../AdminDashboard/Components/AgentsCard/AgentsCard";
 import "./agentsPage.scss";
 
-function AgentsPage(){
+function OfficesPage(){
     return(
         <div className="agentsPage" style={{ display: "flex", flexWrap: "wrap" }}>
-            <AgentsCard />
-            <AgentsCard />
-            <AgentsCard />
-            <AgentsCard />
-            <AgentsCard />
+            Offices
         </div>
     )
 }
 
-export default AgentsPage;
+export default OfficesPage;
