@@ -1,10 +1,16 @@
 import "../Components/ContentMain/ContentMain.css";
 import React from "react";
+import OfficesCard from "../Components/OfficeCard/OfficesCard";
 
 const ContentMain = () => {
   return (
-    <div>
-      <h1 style={{color: "white"}}>Offices</h1>
+    <div style={{display: "flex", flexWrap: "wrap"}}>
+        <OfficesCard/>
+        <OfficesCard/>
+        <OfficesCard/>
+        <OfficesCard/>
+        <OfficesCard/>
+        <OfficesCard/>
     </div>
   );
 };
