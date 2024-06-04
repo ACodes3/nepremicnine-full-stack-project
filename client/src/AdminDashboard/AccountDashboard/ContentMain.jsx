@@ -4,7 +4,7 @@ import React from "react";
 const ContentMain = () => {
   return (
     <div>
-      <h1 style={{color: "white"}}>Account</h1>
+      <h1>Account</h1>
     </div>
   );
 };
