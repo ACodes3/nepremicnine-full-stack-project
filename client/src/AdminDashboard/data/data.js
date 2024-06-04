@@ -11,6 +11,7 @@ export const navigationLinks = [
     { id: 7, title: 'Settings', image: iconsImgs.gears, url: '/dashboard/settings' }
 ];
 
+
 export const transactions = [
     {
         id: 11, 
