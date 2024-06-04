@@ -3,11 +3,14 @@ import { iconsImgs } from "../../utils/images";
 import "./ContentTop.css";
 import { useContext } from "react";
 import { SidebarContext } from "../../context/sidebarContext";
-import { navigationLinks } from "../../data/data"; // Import your navigationLinks data
+import { navigationLinks } from "../../data/data"; 
+import { Link } from "react-router-dom";
 
 const ContentTop = () => {
   const { toggleSidebar } = useContext(SidebarContext);
   const [pageTitle, setPageTitle] = useState("Home");
+  const [buttonLabel, setButtonLabel] = useState("Add");
+  const [buttonLink, setButtonLink] = useState("/");
 
   useEffect(() => {
     // Extract the current URL
@@ -19,6 +22,8 @@ const ContentTop = () => {
     // Update the page title if a matching link is found
     if (link) {
       setPageTitle(link.title);
+      setButtonLabel(link.buttonLabel);
+      setButtonLink(link.buttonLink);
     }
   }, []);
 
@@ -35,13 +40,21 @@ const ContentTop = () => {
         <h3 className="content-top-title">{pageTitle}</h3>
       </div>
       <div className="content-top-btns">
-        <button type="button" className="search-btn content-top-btn">
-          <img src={iconsImgs.search} alt="" />
-        </button>
-        <button className="notification-btn content-top-btn">
-          <img src={iconsImgs.bell} alt="" />
-          <span className="notification-btn-dot"></span>
-        </button>
+        <Link to={buttonLink}>
+          <button
+            style={{
+              marginLeft:"10px",
+              background: "#ff7920",
+              padding: "10px",
+              borderRadius: "20px",
+              width: "max-content",
+              cursor: "pointer",
+              color: "white",
+            }}
+          >
+            {buttonLabel}
+          </button>
+        </Link>
       </div>
     </div>
   );
