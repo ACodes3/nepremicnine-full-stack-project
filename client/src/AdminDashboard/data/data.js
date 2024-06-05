@@ -6,9 +6,10 @@ export const navigationLinks = [
     { id: 2, title: 'Agents', buttonLabel: "Add Agent", image: iconsImgs.wallet, url: '/dashboard/agents', buttonLink: "/dashboard/add-agent" },
     { id: 3, title: 'Branch Managers', buttonLabel: "Add Branch Manager", image: iconsImgs.wallet, url: '/dashboard/managers', buttonLink: "/dashboard/add-manager" },
     { id: 4, title: 'Offices', buttonLabel: "Add Office", image: iconsImgs.budget, url: '/dashboard/offices', buttonLink: "/dashboard/add-office" },
-    { id: 5, title: 'Listings', buttonLabel: "Add New Listing", image: iconsImgs.plane, url: '/dashboard/listings', buttonLink: "/dashboard/add-listing" },
-    { id: 6, title: 'Account', image: iconsImgs.user, url: '/dashboard/account' },
-    { id: 7, title: 'Settings', image: iconsImgs.gears, url: '/dashboard/settings' }
+    { id: 5, title: 'Estates', buttonLabel: "Add Estate", image: iconsImgs.wealth, url: '/dashboard/estates', buttonLink: "/dashboard/add-estate" },
+    { id: 6, title: 'Listings', buttonLabel: "Add New Listing", image: iconsImgs.plane, url: '/dashboard/listings', buttonLink: "/dashboard/add-listing" },
+    { id: 7, title: 'Account', image: iconsImgs.user, url: '/dashboard/account' },
+    { id: 8, title: 'Settings', image: iconsImgs.gears, url: '/dashboard/settings' }
 ];
 
 
