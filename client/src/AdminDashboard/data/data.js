@@ -4,7 +4,7 @@ import { personsImgs } from "../utils/images";
 export const navigationLinks = [
     { id: 1, title: 'Dashboard', image: iconsImgs.home, url: '/dashboard' },
     { id: 2, title: 'Agents', buttonLabel: "Add Agent", image: iconsImgs.wallet, url: '/dashboard/agents', buttonLink: "/dashboard/add-agent" },
-    { id: 3, title: 'Branch Managers', buttonLabel: "Add Branch Manager", image: iconsImgs.wallet, url: '/dashboard/managers', buttonLink: "/dashboard/add-manager" },
+    { id: 3, title: 'Branch Managers', buttonLabel: "Add Branch Manager", image: iconsImgs.bills, url: '/dashboard/managers', buttonLink: "/dashboard/add-manager" },
     { id: 4, title: 'Offices', buttonLabel: "Add Office", image: iconsImgs.budget, url: '/dashboard/offices', buttonLink: "/dashboard/add-office" },
     { id: 5, title: 'Estates', buttonLabel: "Add Estate", image: iconsImgs.wealth, url: '/dashboard/estates', buttonLink: "/dashboard/add-estate" },
     { id: 6, title: 'Listings', buttonLabel: "Add New Listing", image: iconsImgs.plane, url: '/dashboard/listings', buttonLink: "/dashboard/add-listing" },
