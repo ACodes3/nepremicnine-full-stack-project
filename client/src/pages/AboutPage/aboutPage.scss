@@ -1,3 +1,27 @@
 .aboutPage{
-    
+    .container {
+        padding-top: 3.5rem; // equivalent to pt-14
+      
+        .py-10 {
+          padding-top: 2.5rem; // equivalent to py-10
+          padding-bottom: 2.5rem; // equivalent to py-10
+      
+          h1 {// equivalent to my-8
+            margin-bottom: 2rem; // equivalent to my-8
+            border-left: 0.5rem solid orange; // equivalent to border-l-8 border-primary/50
+            padding-top: 0.5rem; // equivalent to py-2
+            padding-bottom: 0.5rem; // equivalent to py-2
+            padding-left: 0.5rem; // equivalent to pl-2
+            font-size: 1.875rem; // equivalent to text-3xl
+            font-weight: bold; // equivalent to font-bold
+          }
+      
+          p {
+            &:not(:last-of-type) {
+              margin-bottom: 1rem; // equivalent to the space before <br />
+            }
+          }
+        }
+      }
+      
 }
