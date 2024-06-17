@@ -4,7 +4,7 @@ const con = new Client({
     host: 'localhost',
     user: 'postgres',
     password: 'postgres',
-    database: 'real-estate-db',
+    database: 'a_real_estate_20240605',
 });
 
 con.connect(err => {
