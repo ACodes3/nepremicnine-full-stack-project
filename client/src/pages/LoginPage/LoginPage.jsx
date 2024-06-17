@@ -22,7 +22,7 @@ function LoginPage() {
             placeholder="Password"
           />
           <button>Login</button>
-          <Link to="/register">{"Don't"} you have an account?</Link>
+          <Link to="/sign-up">{"Don't"} you have an account?</Link>
         </form>
       </div>
       <div className="imgContainer">

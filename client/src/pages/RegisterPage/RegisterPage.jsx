@@ -11,7 +11,7 @@ function RegisterPage() {
           <input name="email" type="text" placeholder="Email" />
           <input name="password" type="password" placeholder="Password" />
           <button>Register</button>
-          <Link to="/login">Do you have an account?</Link>
+          <Link to="/sign-in">Do you have an account?</Link>
         </form>
       </div>
       <div className="imgContainer">
