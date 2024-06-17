@@ -1,20 +1,18 @@
-import pkg from 'pg';
-const { Pool } = pkg;
+import mysql from "mysql";
 
-const con = new Pool({
-    host: 'localhost',
-    user: 'postgres',
-    password: 'postgres',
-    database: 'a_real_estate_20240605',
-    port: 5432, // default port for PostgreSQL
-});
+const con = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "a_real_estate_20240605",
+})
 
-con.connect(err => {
-    if (err) {
-        console.error('Connection error', err.stack);
+con.connect(function(err) {
+    if(err) {
+        console.log("connection error")
     } else {
-        console.log('Connected');
+        console.log("Connected")
     }
-});
+})
 
 export default con;
