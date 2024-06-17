@@ -14,6 +14,10 @@ app.use("/auth", adminRouter)
 app.use(express.static("Public"))
 app.use(cookieParser())
 
+{/*app.get('/api/test', (req, res) => {
+    res.json({ message: 'Server is running and connected to the frontend!' });
+});*/}
+
 app.listen(3000, () => {
     console.log("Server is running")
 })
