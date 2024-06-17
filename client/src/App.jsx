@@ -59,11 +59,11 @@ function App() {
           element: <ProfilePage />,
         },
         {
-          path: "/login",
+          path: "/sign-in",
           element: <LoginPage />,
         },
         {
-          path: "/register",
+          path: "/sign-up",
           element: <RegisterPage />,
         },
         {

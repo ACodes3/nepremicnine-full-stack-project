@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 function Navbar() {
   const [open, setOpen] = useState(false);
 
-  const user = true;
+  const user = false;
   return (
     <nav>
       <div className="left">
@@ -34,7 +34,7 @@ function Navbar() {
           </div>
         ) : (
           <>
-            <Link to="/sing-in">Sign in</Link>
+            <Link to="/sign-in">Sign in</Link>
             <Link to="/sign-up" className="register">
               Sign up
             </Link>
