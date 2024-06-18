@@ -6,11 +6,6 @@ const ContentMain = () => {
   return (
     <div style={{display: "flex", flexWrap: "wrap"}}>
         <OfficesCard/>
-        <OfficesCard/>
-        <OfficesCard/>
-        <OfficesCard/>
-        <OfficesCard/>
-        <OfficesCard/>
     </div>
   );
 };
