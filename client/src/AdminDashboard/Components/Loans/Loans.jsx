@@ -1,40 +1,56 @@
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
 import { iconsImgs } from "../../utils/images";
 import "./Loans.css";
+import { formatDate } from "../Functions/FormatDate";
 
 const Loans = () => {
-  return (
-    <div className="subgrid-two-item grid-common grid-c7">
-        <div className="grid-c-title">
-            <h3 className="grid-c-title-text">Loans</h3>
-            <button className="grid-c-title-icon">
-                <img src={iconsImgs.plus} />
-            </button>
-        </div>
-        <div className="grid-c7-content">
-            <div className="progress-bar">
-                <div className="percent">
-                    <svg>
-                        <circle cx="105" cy="105" r="50"></circle>
-                        {/* <circle cx="105" cy="105" r="50" style="--percent: 50"></circle> */}
-                    </svg>
-                    <div className="number">
-                        <h3>50<span>%</span></h3>
-                    </div>
-                </div>
-            </div>
-            <ul className="data-list">
-                <li className="data-item text-silver-v1">
-                    <span className="data-item-text">Savings Target</span>
-                    <span className="data-item-value">$ 500,000</span>
-                </li>
-                <li className="data-item text-silver-v1">
-                    <span className="data-item-text">Target Reached</span>
-                    <span className="data-item-value">$ 250,000</span>
-                </li>
-            </ul>
-        </div>
-    </div>
-  )
-}
+  const [offices, setOffices] = useState([]);
+  const [role, setRole] = useState(""); // State to store user role
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/auth/branch-offices")
+      .then((result) => {
+        if (result.data.Status) {
+          setOffices(result.data.Result);
+        } else {
+          alert(result.data.Error);
+        }
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
-export default Loans
+  return (
+    <div className="grid-one-item grid-common grid-c2">
+      <div className="grid-c-title">
+        <h3 className="grid-c-title-text">Branch Offices</h3>
+        <button className="grid-c-title-icon">
+          <img src={iconsImgs.plus} />
+        </button>
+      </div>
+
+      <div className="grid-content">
+        <div className="grid-items">
+          {offices.map((office) => (
+            <div className="grid-item" key={office.id}>
+              <div className="grid-item-l">
+              <div className="avatar img-fit-cover">
+                  <img src={iconsImgs.home} alt="" />
+                </div>
+                <p className="text">
+                  {office.office_street_name} {office.office_street_number}{" "}
+                  {office.office_post_code} {office.office_city}{" "}
+                  <span>phone: {office.office_phone}</span>
+                  <span>fax: {office.office_fax}</span>
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Loans;

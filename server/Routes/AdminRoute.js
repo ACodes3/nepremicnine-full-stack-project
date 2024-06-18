@@ -53,6 +53,32 @@ router.get('/estates', (req, res) => {
     })
 })
 
+//USERS
+router.get('/users', (req, res) => {
+    const sql = "SELECT * FROM users";
+    con.query(sql, (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
+//POSTS
+router.get('/posts', (req, res) => {
+    const sql = "SELECT * FROM post";
+    con.query(sql, (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
+//BRANCH OFFICES
+router.get('/branch-offices', (req, res) => {
+    const sql = "SELECT * FROM office_branch";
+    con.query(sql, (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
 
 
 //GET COUNTS
