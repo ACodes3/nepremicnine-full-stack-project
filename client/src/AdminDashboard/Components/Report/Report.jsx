@@ -37,7 +37,7 @@ const Report = () => {
               <div className="grid-item" key={admin.admin_id}>
                 <div className="grid-item-l">
                   <div className="avatar img-fit-cover">
-                    <img src={admin.admin_avatar} alt="" />
+                    <img src={`http://localhost:3000/Images/` + admin.admin_avatar} alt="" />
                   </div>
                   <p className="text">
                     {admin.admin_name} {admin.admin_surname} <span>{formatDate(admin.admin_startdate)}</span>

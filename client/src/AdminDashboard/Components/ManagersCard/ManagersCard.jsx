@@ -28,7 +28,7 @@ const ManagersCard = () => {
         <div className="upc" key={manager.id}>
           <div className="gradiant"></div>
           <div className="profile-down">
-            <img src={manager.manager_avatar} alt="" />
+          <img src={`http://localhost:3000/Images/` + manager.manager_avatar} alt="" />
             <div className="profile-title">
               {manager.manager_name} {manager.manager_surname}
             </div>

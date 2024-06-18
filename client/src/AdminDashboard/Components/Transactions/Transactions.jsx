@@ -21,7 +21,7 @@ const Transactions = () => {
       })
       .catch((err) => console.log(err));
   }, []);
-  
+
   return (
     <div className="grid-one-item grid-common grid-c2">
       <div className="grid-c-title">
@@ -37,10 +37,16 @@ const Transactions = () => {
             <div className="grid-item" key={manager.manager_id}>
               <div className="grid-item-l">
                 <div className="avatar img-fit-cover">
-                  <img src={manager.manager_avatar} alt="" />
+                  <img
+                    src={
+                      `http://localhost:3000/Images/` + manager.manager_avatar
+                    }
+                    alt=""
+                  />
                 </div>
                 <p className="text">
-                  {manager.manager_name} {manager.manager_surname} <span>{formatDate(manager.manager_became_date)}</span>
+                  {manager.manager_name} {manager.manager_surname}{" "}
+                  <span>{formatDate(manager.manager_became_date)}</span>
                 </p>
               </div>
               <div className="grid-item-r">
