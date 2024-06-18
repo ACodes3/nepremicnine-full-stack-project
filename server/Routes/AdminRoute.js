@@ -7,7 +7,7 @@ import path from "path";
 
 const router = express.Router()
 
-//LOGIN ROUTE
+//LOGIN ROUTES
 router.post("/sign-in", (req, res) => {
     const sql = "SELECT * from admin Where admin_email = ? and admin_password = ?"
     con.query(sql, [req.body.admin_email, req.body.admin_password], (err, result) => {
@@ -21,6 +21,28 @@ router.post("/sign-in", (req, res) => {
     })
 })
 
+
+
+
+
+//GET ROUTES
+//MANAGERS
+router.get('/managers', (req, res) => {
+    const sql = "SELECT * FROM manager";
+    con.query(sql, (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
+//ADMINS
+router.get('/admins', (req, res) => {
+    const sql = "SELECT * FROM admin";
+    con.query(sql, (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
 
 
 

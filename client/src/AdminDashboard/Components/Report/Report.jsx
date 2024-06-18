@@ -1,41 +1,57 @@
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
 import { iconsImgs } from "../../utils/images";
 import "./Report.css";
 import { reportData } from "../../data/data";
+import { formatDate } from "../Functions/FormatDate";
 
 const Report = () => {
-  return (
-    <div className="grid-one-item grid-common grid-c3">
+    const [admins, setAdmins] = useState([]);
+    const [role, setRole] = useState(""); // State to store user role
+    useEffect(() => {
+      axios
+        .get("http://localhost:3000/auth/admins")
+        .then((result) => {
+          if (result.data.Status) {
+            setAdmins(result.data.Result);
+          } else {
+            alert(result.data.Error);
+          }
+        })
+        .catch((err) => console.log(err));
+    }, []);
+    
+    return (
+      <div className="grid-one-item grid-common grid-c2">
         <div className="grid-c-title">
-            <h3 className="grid-c-title-text">Report</h3>
-            <button className="grid-c-title-icon">
-                <img src={ iconsImgs.plus } />
-            </button>
+          <h3 className="grid-c-title-text">Admins</h3>
+          <button className="grid-c-title-icon">
+            <img src={iconsImgs.plus} />
+          </button>
         </div>
-        <div className="grid-c3-content">
-            <div className="grid-chart">
-                <div className="chart-vert-value">
-                    <span>100</span>
-                    <span>75</span>
-                    <span>50</span>
-                    <span>25</span>
-                    <span>0</span>
+  
+        <div className="grid-content">
+          <div className="grid-items">
+            {admins.map((admin) => (
+              <div className="grid-item" key={admin.admin_id}>
+                <div className="grid-item-l">
+                  <div className="avatar img-fit-cover">
+                    <img src={admin.admin_avatar} alt="" />
+                  </div>
+                  <p className="text">
+                    {admin.admin_name} {admin.admin_surname} <span>{formatDate(admin.admin_startdate)}</span>
+                  </p>
                 </div>
-                {
-                    reportData.map((report) => (
-                        <div className="grid-chart-bar" key={report.id}>
-                            <div className="bar-wrapper">
-                                <div className="bar-item1" style={{ height: `${report.value1 !== null ? "40%" : ""}` }}></div>
-                                <div className="bar-item2" style={{ height: `${report.value2 !== null ? "60%" : ""}` }}></div>
-                            </div>
-                            <span className="grid-hortz-value">Jan</span>
-                        </div>
-                    ))
-                }
-                
-            </div>
+                <div className="grid-item-r">
+                  <span className="text-scarlet">$ {admin.admin_pay}</span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-    </div>
-  )
-}
+      </div>
+    );
+  };
 
 export default Report
