@@ -44,6 +44,26 @@ router.get('/admins', (req, res) => {
     })
 })
 
+//ESTATES
+router.get('/estates', (req, res) => {
+    const sql = "SELECT * FROM estate";
+    con.query(sql, (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
+
+
+//GET COUNTS
+//ESTATE COUNT
+router.get("/estates-count", (req, res) => {
+    const sql = "SELECT count(estate_id) as estate_count from estate";
+    con.query(sql, (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
 
 
 
