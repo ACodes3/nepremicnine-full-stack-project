@@ -29,7 +29,7 @@ const AgentsCard = () => {
         <div className="upc" key={staf.id}>
           <div className="gradiant"></div>
           <div className="profile-down">
-            <img src={staf.staff_avatar} alt="" />
+          <img src={`http://localhost:3000/Images/` + staf.staff_avatar} alt="" />
             <div className="profile-title">
               {staf.staff_name} {staf.staff_surname}
             </div>
