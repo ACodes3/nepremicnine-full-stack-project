@@ -80,6 +80,18 @@ router.get('/branch-offices', (req, res) => {
     })
 })
 
+//COMBINED STAFF DATA
+router.get('/staff', (req, res) => {
+    const sql = "SELECT staff.*, staff_group.*, staff_type.* FROM staff " +
+                "INNER JOIN staff_group ON staff.staff_group_id = staff_group.staff_group_id " +
+                "INNER JOIN staff_type ON staff.staff_type_id = staff_type.staff_type_id";
+    con.query(sql, (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" });
+        return res.json({ Status: true, Result: result });
+    });
+});
+
+
 
 //GET COUNTS
 //ESTATE COUNT

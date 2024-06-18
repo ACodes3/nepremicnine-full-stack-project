@@ -7,9 +7,6 @@ const ContentMain = () => {
     <>
       <div style={{ display: "flex", flexWrap: "wrap" }}>
         <AgentsCard />
-        <AgentsCard />
-        <AgentsCard />
-        <AgentsCard />
       </div>
     </>
   );
