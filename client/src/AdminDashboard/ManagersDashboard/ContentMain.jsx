@@ -7,11 +7,6 @@ const ContentMain = () => {
   return (
     <div style={{ display: "flex", flexWrap: "wrap" }}>
       <ManagersCard />
-      <ManagersCard />
-      <ManagersCard />
-      <ManagersCard />
-      <ManagersCard />
-      <ManagersCard />
     </div>
   );
 };
