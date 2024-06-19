@@ -34,7 +34,7 @@ const upload = multer({
     storage: storage
 })
 
-// POST /auth/add-agent route to handle agent insertion
+// POST INSERT AGENT
 router.post("/add-agent", upload.single('staff_avatar'), (req, res) => {
     console.log("Received file:", req.file);
     console.log("Received form data:", req.body);
@@ -55,6 +55,37 @@ router.post("/add-agent", upload.single('staff_avatar'), (req, res) => {
         req.body.staff_emso,
         req.body.staff_pay,
         req.body.staff_startdate,
+        req.file.filename // Assuming multer has stored the file details in req.file
+    ];
+
+    con.query(sql, values, (err, result) => {
+        if (err) {
+            console.error("Error inserting agent:", err);
+            return res.status(500).json({ Status: false, Error: "Failed to insert agent." });
+        }
+        return res.json({ Status: true });
+    });
+});
+
+// POST INSERT MANAGER
+router.post("/add-manager", upload.single('manager_avatar'), (req, res) => {
+    console.log("Received file:", req.file);
+    console.log("Received form data:", req.body);
+    const sql = "INSERT INTO manager (role_id, staff_type_id, manager_name, manager_surname, manager_address, manager_phone, manager_fax, manager_gender, manager_birthdate, manager_emso, manager_pay, manager_startdate, manager_became_date, manager_avatar) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    const values = [
+        req.body.role_id,
+        req.body.staff_type_id,
+        req.body.manager_name,
+        req.body.manager_surname,
+        req.body.manager_address,
+        req.body.manager_phone,
+        req.body.manager_fax,
+        req.body.manager_gender,
+        req.body.manager_birthdate,
+        req.body.manager_emso,
+        req.body.manager_pay,
+        req.body.manager_startdate,
+        req.body.manager_became_date,
         req.file.filename // Assuming multer has stored the file details in req.file
     ];
 
