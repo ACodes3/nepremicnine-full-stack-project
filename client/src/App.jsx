@@ -19,6 +19,7 @@ import OfficesPage from "./pages/OfficesPage/OfficesPage";
 import EstateDashboard from "./AdminDashboard/EstateDashboard/EstateDashboard";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import RegisterPage from "./pages/RegisterPage/RegisterPage";
+import InsertAgent from "./AdminDashboard/AgentsDashboard/InsertAgent/InsertAgent";
 
 function App() {
   const router = createBrowserRouter([
@@ -100,6 +101,10 @@ function App() {
             {
               path: "/dashboard/settings",
               element: <SettingsDashboard />,
+            },
+            {
+              path: "/dashboard/add-agent",
+              element: <InsertAgent />,
             },
           ],
         },
