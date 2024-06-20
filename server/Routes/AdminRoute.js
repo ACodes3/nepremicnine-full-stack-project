@@ -291,6 +291,33 @@ router.put("/edit-agent/:id", (req, res) => {
     })
 })
 
+//MANAGER
+router.get("/managers/:id", (req, res) => {
+    const id = req.params.id;
+    const sql = "SELECT * FROM manager WHERE manager_id = ?";
+    con.query(sql, [id], (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
+router.put("/edit-manager/:id", (req, res) => {
+    const id = req.params.id;
+    const sql = `UPDATE manager set manager_name = ?, manager_surname = ?, manager_address = ?, manager_phone = ?, manager_fax = ?, manager_pay = ? Where manager_id = ?`
+    const values = [
+        req.body.manager_name,
+        req.body.manager_surname,
+        req.body.manager_address,
+        req.body.manager_phone,
+        req.body.manager_fax,
+        req.body.manager_pay,
+        id,
+    ]
+    con.query(sql, values, (err, result) => {
+        if (err) return res.json({ Status: false, Error: err })
+        return res.json({ Status: true })
+    })
+})
 
 
 //GET COUNTS

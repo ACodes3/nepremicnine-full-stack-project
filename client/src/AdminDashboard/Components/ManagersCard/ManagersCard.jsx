@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "./AgentsCard.css";
@@ -92,10 +93,12 @@ const ManagersCard = () => {
                   cursor: "pointer",
                 }}
               >
-                Edit Manager
+                <Link to={`/dashboard/edit-manager/` + manager.manager_id}>
+                  Edit Manager
+                </Link>
               </button>
               <button
-              onClick={() => handleDeleteManager(manager.manager_id)}
+                onClick={() => handleDeleteManager(manager.manager_id)}
                 style={{
                   backgroundColor: "red",
                   border: "none",
