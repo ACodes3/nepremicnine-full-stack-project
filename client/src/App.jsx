@@ -22,6 +22,7 @@ import RegisterPage from "./pages/RegisterPage/RegisterPage";
 import InsertAgent from "./AdminDashboard/AgentsDashboard/InsertAgent/InsertAgent";
 import AddManager from "./AdminDashboard/ManagersDashboard/AddManager/AddManager";
 import InsertAdmin from "./AdminDashboard/InsertAdmin/InsertAdmin";
+import EditAgent from "./AdminDashboard/AgentsDashboard/EditAgent/EditAgent";
 
 function App() {
   const router = createBrowserRouter([
@@ -115,6 +116,10 @@ function App() {
             {
               path: "/dashboard/add-admin",
               element: <InsertAdmin />,
+            },
+            {
+              path: "/dashboard/edit-agent/:id",
+              element: <EditAgent />,
             },
           ],
         },

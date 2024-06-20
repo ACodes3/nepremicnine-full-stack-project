@@ -1,0 +1,97 @@
+// Variables
+$primary-color: #077fa3;
+$secondary-color: #2ecc71;
+$text-color: #333;
+$background-color: #f8f9fa;
+$border-radius: 5px;
+$box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin rounded {
+  border-radius: $border-radius;
+}
+
+@mixin box-shadow {
+  box-shadow: $box-shadow;
+}
+
+// Scoped Styles
+.insert-agent-card {
+  body {
+    font-family: Arial, sans-serif;
+    color: $text-color;
+    background-color: $background-color;
+  }
+
+  .grid-two-item {
+    @include flex-center;
+    flex-direction: column;
+    margin: 2rem;
+  }
+
+  .grid-common {
+    width: 100%;
+    max-width: 600px;
+    padding: 2rem;
+    background: white;
+    @include rounded;
+    @include box-shadow;
+  }
+
+  // Form Styles
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  label {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+
+  input, select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    @include rounded;
+    transition: border-color 0.3s;
+
+    &:focus {
+      border-color: $primary-color;
+    }
+  }
+
+  button {
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    padding: 0.75rem;
+    cursor: pointer;
+    @include rounded;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+  }
+
+  .text-silver-v1 {
+    color: #5c5f61;
+  }
+
+  .bg-jet {
+    background-color: #d78d42;
+    color: white;
+  }
+
+  .grid-c4-content {
+    padding: 2rem;
+  }
+}

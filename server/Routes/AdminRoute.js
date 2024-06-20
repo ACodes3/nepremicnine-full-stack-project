@@ -262,6 +262,36 @@ router.delete("/delete-manager/:id", (req, res) => {
 });
 
 
+//EDIT ROUTES
+//AGENT
+router.get("/agents/:id", (req, res) => {
+    const id = req.params.id;
+    const sql = "SELECT * FROM staff WHERE staff_id = ?";
+    con.query(sql, [id], (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
+router.put("/edit-agent/:id", (req, res) => {
+    const id = req.params.id;
+    const sql = `UPDATE staff set staff_name = ?, staff_surname = ?, staff_email = ?, staff_password = ?, staff_address = ?, staff_phone = ? Where staff_id = ?`
+    const values = [
+        req.body.staff_name,
+        req.body.staff_surname,
+        req.body.staff_email,
+        req.body.staff_password,
+        req.body.staff_address,
+        req.body.staff_phone,
+        id,
+    ]
+    con.query(sql, values, (err, result) => {
+        if (err) return res.json({ Status: false, Error: err })
+        return res.json({ Status: true })
+    })
+})
+
+
 
 //GET COUNTS
 //ESTATE COUNT
