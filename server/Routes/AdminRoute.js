@@ -223,6 +223,44 @@ router.get('/staff', (req, res) => {
     });
 });
 
+//DELETE ROUTES
+//AGENT
+router.delete("/delete-agent/:id", (req, res) => {
+    const id = req.params.id;
+    const sql = "DELETE FROM staff where staff_id = ?"
+    con.query(sql, [id], (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
+//ADMIN
+router.delete("/delete-admin/:id", (req, res) => {
+    const id = req.params.id;
+    const sql = "DELETE FROM admin where admin_id = ?"
+    con.query(sql, [id], (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
+//MANAGER
+router.delete("/delete-manager/:id", (req, res) => {
+    const id = req.params.id;
+    const sql = "DELETE FROM manager WHERE manager_id = ?";
+    
+    console.log(`Attempting to delete manager with id: ${id}`);  // Log the manager id being deleted
+
+    con.query(sql, [id], (err, result) => {
+        if (err) {
+            console.error("Query Error: ", err);  // Log the exact error
+            return res.json({ Status: false, Error: "Query Error" });
+        }
+        console.log("Delete Result: ", result);  // Log the result of the query
+        return res.json({ Status: true, Result: result });
+    });
+});
+
 
 
 //GET COUNTS
