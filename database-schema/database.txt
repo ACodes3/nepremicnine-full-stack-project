@@ -441,3 +441,117 @@ VALUES
 (1, 1, 'Emma', 'Johnson', 'emma@example.com', 'hashed_password', '456 Admin St', '555-4321', '555-8765', 'Female', '1982-10-25', '9876543210987', 72000, '2019-08-20', 'emma_avatar.jpg');
 
 SELECT * FROM admin;
+
+--FUNCTIONS
+CREATE OR REPLACE FUNCTION insert_message(
+    p_chat_id INT,
+    p_user_id INT,
+    p_staff_id INT,
+    p_message_text TEXT,
+    p_message_created_at TIMESTAMP
+)
+RETURNS VOID AS $$
+BEGIN
+    INSERT INTO message (chat_id, user_id, staff_id, message_text, message_created_at)
+    VALUES (p_chat_id, p_user_id, p_staff_id, p_message_text, p_message_created_at);
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT insert_message(43, 1, 6, 'Hello, how can I assist you today?', '2023-05-10');
+
+CREATE OR REPLACE FUNCTION insert_staff(
+    p_staff_type_id INT,
+    p_staff_group_id INT,
+    p_role_id INT,
+    p_staff_name VARCHAR,
+    p_staff_surname VARCHAR,
+    p_staff_email VARCHAR,
+    p_staff_password VARCHAR,
+    p_staff_address VARCHAR,
+    p_staff_phone VARCHAR,
+    p_staff_fax VARCHAR,
+    p_staff_gender VARCHAR,
+    p_staff_birth_date DATE,
+    p_staff_emso VARCHAR,
+    p_staff_pay NUMERIC,
+    p_staff_start_date DATE,
+    p_staff_avatar VARCHAR
+)
+RETURNS VOID AS $$
+BEGIN
+    INSERT INTO staff (
+        staff_type_id, staff_group_id, role_id, staff_name, staff_surname, staff_email, staff_password, staff_address, staff_phone, staff_fax, staff_gender, staff_birth_date, staff_emso, staff_pay, staff_start_date, staff_avatar
+    ) VALUES (
+        p_staff_type_id, p_staff_group_id, p_role_id, p_staff_name, p_staff_surname, p_staff_email, p_staff_password, p_staff_address, p_staff_phone, p_staff_fax, p_staff_gender, p_staff_birth_date, p_staff_emso, p_staff_pay, p_staff_start_date, p_staff_avatar
+    );
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT insert_staff(2, 9, 2, 'John', 'Doe', 'john.doe@example.com', 'hashed_password_1', '123 Main St', '+123456789', '+123456789', 'Male', '1990-05-15', '90051512345', 50000, '2020-01-01', 'avatar1.jpg');
+
+CREATE OR REPLACE FUNCTION insert_estate(
+    p_owner_id INT,
+    p_staff_group_id INT,
+    p_estate_address VARCHAR,
+    p_estate_type VARCHAR,
+    p_estate_bedrooms INT,
+    p_estate_square_footage INT,
+    p_estate_rent NUMERIC,
+    p_estate_images VARCHAR,
+    p_estate_city VARCHAR,
+    p_estate_bathrooms INT,
+    p_estate_latitude NUMERIC,
+    p_estate_longitude NUMERIC,
+    p_estate_property VARCHAR
+)
+RETURNS VOID AS $$
+BEGIN
+    INSERT INTO estate (
+        owner_id, staff_group_id, estate_address, estate_type, estate_bedrooms, estate_square_footage, estate_rent, estate_images, estate_city, estate_bathrooms, estate_latitude, estate_longitude, estate_property
+    ) VALUES (
+        p_owner_id, p_staff_group_id, p_estate_address, p_estate_type, p_estate_bedrooms, p_estate_square_footage, p_estate_rent, p_estate_images, p_estate_city, p_estate_bathrooms, p_estate_latitude, p_estate_longitude, p_estate_property
+    );
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION insert_manager_auto(
+    p_manager_id INT,
+    p_manager_auto_name VARCHAR,
+    p_manager_auto_km INT
+)
+RETURNS VOID AS $$
+BEGIN
+    INSERT INTO manager_auto (manager_id, manager_auto_name, manager_auto_km)
+    VALUES (p_manager_id, p_manager_auto_name, p_manager_auto_km);
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT insert_manager_auto(1, 'Manager Car', 15000);
+
+CREATE OR REPLACE FUNCTION insert_manager(
+    p_role_id INT,
+    p_staff_type_id INT,
+    p_manager_name VARCHAR,
+    p_manager_surname VARCHAR,
+    p_manager_address VARCHAR,
+    p_manager_phone VARCHAR,
+    p_manager_fax VARCHAR,
+    p_manager_gender VARCHAR,
+    p_manager_birth_date DATE,
+    p_manager_emso VARCHAR,
+    p_manager_pay NUMERIC,
+    p_manager_start_date DATE,
+    p_manager_became_date DATE,
+    p_manager_avatar VARCHAR
+)
+RETURNS VOID AS $$
+BEGIN
+    INSERT INTO manager (
+        role_id, staff_type_id, manager_name, manager_surname, manager_address, manager_phone, manager_fax, manager_gender, manager_birth_date, manager_emso, manager_pay, manager_start_date, manager_became_date, manager_avatar
+    ) VALUES (
+        p_role_id, p_staff_type_id, p_manager_name, p_manager_surname, p_manager_address, p_manager_phone, p_manager_fax, p_manager_gender, p_manager_birth_date, p_manager_emso, p_manager_pay, p_manager_start_date, p_manager_became_date, p_manager_avatar
+    );
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT insert_manager(2, 2, 'John', 'Doe', '123 Main St', '555-1234', '555-5678', 'Male', '1980-05-15', '1234567890123', 60000, '2020-01-15', '2020-01-15', 'john_avatar.jpg');
