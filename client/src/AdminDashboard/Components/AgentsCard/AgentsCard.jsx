@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "./AgentsCard.css";
@@ -92,7 +93,13 @@ const AgentsCard = () => {
                   cursor: "pointer",
                 }}
               >
-                Edit Agent
+                <Link
+                        to={
+                          `/dashboard/edit-agent/` + staf.staff_id
+                        }
+                      >
+                        Edit Agent
+                      </Link>
               </button>
               <button
                 onClick={() => handleDeleteAgent(staf.staff_id)}
