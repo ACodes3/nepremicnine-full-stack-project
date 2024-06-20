@@ -99,24 +99,25 @@ router.post("/add-manager", upload.single('manager_avatar'), (req, res) => {
 });
 
 // POST INSERT ADMIN
-{/*router.post("/add-admin", upload.single('admin_avatar'), (req, res) => {
+router.post("/add-admin", upload.single('admin_avatar'), (req, res) => {
     console.log("Received file:", req.file);
     console.log("Received form data:", req.body);
-    const sql = "INSERT INTO admin (staff_type_id, role_id, manager_name, manager_surname, manager_address, manager_phone, manager_fax, manager_gender, manager_birthdate, manager_emso, manager_pay, manager_startdate, manager_became_date, manager_avatar) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    const sql = "INSERT INTO admin (staff_type_id, role_id, admin_name, admin_surname, admin_email, admin_password, admin_address, admin_phone, admin_fax, admin_gender, admin_birthdate, admin_emso, admin_pay, admin_startdate, admin_avatar) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     const values = [
-        req.body.role_id,
         req.body.staff_type_id,
-        req.body.manager_name,
-        req.body.manager_surname,
-        req.body.manager_address,
-        req.body.manager_phone,
-        req.body.manager_fax,
-        req.body.manager_gender,
-        req.body.manager_birthdate,
-        req.body.manager_emso,
-        req.body.manager_pay,
-        req.body.manager_startdate,
-        req.body.manager_became_date,
+        req.body.role_id,
+        req.body.admin_name,
+        req.body.admin_surname,
+        req.body.admin_email,
+        req.body.admin_password,
+        req.body.admin_address,
+        req.body.admin_phone,
+        req.body.admin_fax,
+        req.body.admin_gender,
+        req.body.admin_birthdate,
+        req.body.admin_emso,
+        req.body.admin_pay,
+        req.body.admin_startdate,
         req.file.filename // Assuming multer has stored the file details in req.file
     ];
 
@@ -128,7 +129,6 @@ router.post("/add-manager", upload.single('manager_avatar'), (req, res) => {
         return res.json({ Status: true });
     });
 });
-*/}
 
 //GET ROUTES
 //MANAGERS

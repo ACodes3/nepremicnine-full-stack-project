@@ -4,27 +4,25 @@ import { useNavigate } from "react-router-dom";
 import "./InserAgentCard.scss";
 
 const InsertAdminCard = () => {
-  const [staff, setStaff] = useState({
-    staff_type_id: "",
+  const [admins, setAdmins] = useState({
     staff_group_id: "",
     role_id: "",
-    staff_name: "",
+    admin_name: "",
     staff_surname: "",
     staff_email: "",
-    staff_password: "",
-    staff_address: "",
-    staff_phone: "",
-    staff_fax: "",
-    staff_gender: "",
-    staff_birthdate: "",
-    staff_emso: "",
-    staff_pay: "",
-    staff_startdate: "",
-    staff_avatar: "",
+    admin_password: "",
+    admin_address: "",
+    admin_phone: "",
+    admin_fax: "",
+    admin_gender: "",
+    admin_birthdate: "",
+    admin_emso: "",
+    admin_pay: "",
+    admin_startdate: "",
+    admin_avatar: "",
   });
 
   const [staffType, setStaffType] = useState([]);
-  const [staffGroup, setStaffGroup] = useState([]);
   const [roles, setRoles] = useState([]);
   const navigate = useNavigate();
 
@@ -34,19 +32,6 @@ const InsertAdminCard = () => {
       .then((result) => {
         if (result.data.Status) {
           setStaffType(result.data.Result);
-        } else {
-          alert(result.data.Error);
-        }
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/auth/staff-group")
-      .then((result) => {
-        if (result.data.Status) {
-          setStaffGroup(result.data.Result);
         } else {
           alert(result.data.Error);
         }
@@ -70,28 +55,27 @@ const InsertAdminCard = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("staff_type_id", staff.staff_type_id);
-    formData.append("staff_group_id", staff.staff_group_id);
-    formData.append("role_id", staff.role_id);
-    formData.append("staff_name", staff.staff_name);
-    formData.append("staff_surname", staff.staff_surname);
-    formData.append("staff_email", staff.staff_email);
-    formData.append("staff_password", staff.staff_password);
-    formData.append("staff_address", staff.staff_address);
-    formData.append("staff_phone", staff.staff_phone);
-    formData.append("staff_fax", staff.staff_fax);
-    formData.append("staff_gender", staff.staff_gender);
-    formData.append("staff_birthdate", staff.staff_birthdate);
-    formData.append("staff_emso", staff.staff_emso);
-    formData.append("staff_pay", staff.staff_pay);
-    formData.append("staff_startdate", staff.staff_startdate);
-    formData.append("staff_avatar", staff.staff_avatar);
+    formData.append("staff_type_id", admins.staff_type_id);
+    formData.append("role_id", admins.role_id);
+    formData.append("admin_name", admins.admin_name);
+    formData.append("admin_surname", admins.admin_surname);
+    formData.append("admin_email", admins.admin_email);
+    formData.append("admin_password", admins.admin_password);
+    formData.append("admin_address", admins.admin_address);
+    formData.append("admin_phone", admins.admin_phone);
+    formData.append("admin_fax", admins.admin_fax);
+    formData.append("admin_gender", admins.admin_gender);
+    formData.append("admin_birthdate", admins.admin_birthdate);
+    formData.append("admin_emso", admins.admin_emso);
+    formData.append("admin_pay", admins.admin_pay);
+    formData.append("admin_startdate", admins.admin_startdate);
+    formData.append("admin_avatar", admins.admin_avatar);
 
     axios
-      .post("http://localhost:3000/auth/add-agent", formData)
+      .post("http://localhost:3000/auth/add-admin", formData)
       .then((result) => {
         if (result.data.Status) {
-          navigate("/dashboard/agents");
+          navigate("/dashboard");
         } else {
           alert(result.data.Error);
         }
@@ -103,7 +87,7 @@ const InsertAdminCard = () => {
     <div className="insert-agent-card">
       <div className="grid-two-item grid-common grid-c4">
         <div>
-          <h3 className="grid-c-top text-silver-v1">Add staff</h3>
+          <h3 className="grid-c-top text-silver-v1">Add Admin</h3>
           <form
             className="grid-c4-content bg-jet"
             onSubmit={handleSubmit}
@@ -111,38 +95,19 @@ const InsertAdminCard = () => {
           >
             <div className="grid-items">
               <label htmlFor="staffType" className="grid-item-l w-100">
-                Staff Type
+                Admin Type
               </label>
               <select
                 name="staffType"
                 id="staffType"
                 className="form-select"
                 onChange={(e) =>
-                  setStaff({ ...staff, staff_type_id: e.target.value })
+                  setAdmins({ ...admins, staff_type_id: e.target.value })
                 }
               >
                 {staffType.map((type) => (
                   <option value={type.staff_type_id}>
                     {type.staff_type_name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="col-12">
-              <label htmlFor="staffGroup" className="form-label">
-                Staff Group
-              </label>
-              <select
-                name="staffGroup"
-                id="staffGroup"
-                className="form-select"
-                onChange={(e) =>
-                  setStaff({ ...staff, staff_group_id: e.target.value })
-                }
-              >
-                {staffGroup.map((group) => (
-                  <option value={group.staff_group_id}>
-                    {group.staff_group_id}
                   </option>
                 ))}
               </select>
@@ -156,7 +121,7 @@ const InsertAdminCard = () => {
                 id="role_id"
                 className="form-select"
                 onChange={(e) =>
-                  setStaff({ ...staff, role_id: e.target.value })
+                  setAdmins({ ...admins, role_id: e.target.value })
                 }
               >
                 {roles.map((role) => (
@@ -174,7 +139,7 @@ const InsertAdminCard = () => {
                 id="staff_name"
                 placeholder="Enter Name"
                 onChange={(e) =>
-                  setStaff({ ...staff, staff_name: e.target.value })
+                  setAdmins({ ...admins, admin_name: e.target.value })
                 }
               />
             </div>
@@ -188,7 +153,7 @@ const InsertAdminCard = () => {
                 id="staff_surname"
                 placeholder="Enter Surname"
                 onChange={(e) =>
-                  setStaff({ ...staff, staff_surname: e.target.value })
+                  setAdmins({ ...admins, admin_surname: e.target.value })
                 }
               />
             </div>
@@ -203,7 +168,7 @@ const InsertAdminCard = () => {
                 placeholder="Enter Email"
                 autoComplete="off"
                 onChange={(e) =>
-                  setStaff({ ...staff, staff_email: e.target.value })
+                  setAdmins({ ...admins, admin_email: e.target.value })
                 }
               />
             </div>
@@ -217,7 +182,7 @@ const InsertAdminCard = () => {
                 id="staff_password"
                 placeholder="Enter Password"
                 onChange={(e) =>
-                  setStaff({ ...staff, staff_password: e.target.value })
+                  setAdmins({ ...admins, admin_password: e.target.value })
                 }
               />
             </div>
@@ -231,7 +196,7 @@ const InsertAdminCard = () => {
                 id="staff_address"
                 placeholder="1234 Main St"
                 onChange={(e) =>
-                  setStaff({ ...staff, staff_address: e.target.value })
+                  setAdmins({ ...admins, admin_address: e.target.value })
                 }
               />
             </div>
@@ -245,7 +210,7 @@ const InsertAdminCard = () => {
                 id="staff_phone"
                 placeholder="Enter Phone Number"
                 onChange={(e) =>
-                  setStaff({ ...staff, staff_phone: e.target.value })
+                  setAdmins({ ...admins, admin_phone: e.target.value })
                 }
               />
             </div>
@@ -259,7 +224,7 @@ const InsertAdminCard = () => {
                 id="staff_fax"
                 placeholder="Enter Fax Number"
                 onChange={(e) =>
-                  setStaff({ ...staff, staff_fax: e.target.value })
+                  setAdmins({ ...admins, admin_fax: e.target.value })
                 }
               />
             </div>
@@ -273,7 +238,7 @@ const InsertAdminCard = () => {
                 id="staff_gender"
                 placeholder="Enter Agents Gender"
                 onChange={(e) =>
-                  setStaff({ ...staff, staff_gender: e.target.value })
+                  setAdmins({ ...admins, admin_gender: e.target.value })
                 }
               />
             </div>
@@ -287,7 +252,7 @@ const InsertAdminCard = () => {
                 id="staff_birthdate"
                 placeholder="Enter Agents Birth Date"
                 onChange={(e) =>
-                  setStaff({ ...staff, staff_birthdate: e.target.value })
+                  setAdmins({ ...admins, admin_birthdate: e.target.value })
                 }
               />
             </div>
@@ -301,7 +266,7 @@ const InsertAdminCard = () => {
                 id="staff_emso"
                 placeholder="Enter Agents EMSO"
                 onChange={(e) =>
-                  setStaff({ ...staff, staff_emso: e.target.value })
+                  setAdmins({ ...admins, admin_emso: e.target.value })
                 }
               />
             </div>
@@ -315,7 +280,7 @@ const InsertAdminCard = () => {
                 id="staff_pay"
                 placeholder="Enter The Agents Pay"
                 onChange={(e) =>
-                  setStaff({ ...staff, staff_pay: e.target.value })
+                  setAdmins({ ...admins, admin_pay: e.target.value })
                 }
               />
             </div>
@@ -329,7 +294,7 @@ const InsertAdminCard = () => {
                 id="staff_startdate"
                 placeholder="Enter The Agents Start Date"
                 onChange={(e) =>
-                  setStaff({ ...staff, staff_startdate: e.target.value })
+                  setAdmins({ ...admins, admin_startdate: e.target.value })
                 }
               />
             </div>
@@ -343,13 +308,13 @@ const InsertAdminCard = () => {
                 id="staff_avatar"
                 name="staff_avatar"
                 onChange={(e) =>
-                  setStaff({ ...staff, staff_avatar: e.target.files[0] })
+                  setAdmins({ ...admins, admin_avatar: e.target.files[0] })
                 }
               />
             </div>
             <div className="col-12">
               <button type="submit" className="btn btn-primary w-100">
-                Add Agent
+                Add Admin
               </button>
             </div>
           </form>
