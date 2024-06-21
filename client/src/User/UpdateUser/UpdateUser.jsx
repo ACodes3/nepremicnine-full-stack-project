@@ -65,6 +65,7 @@ function UpdateUser() {
         <form onSubmit={handleSubmit} encType="multipart/form-data">
           <h1>Update Account</h1>
           <input
+            className="input"
             value={user.user_name_surname}
             name="user_name_surname"
             type="text"

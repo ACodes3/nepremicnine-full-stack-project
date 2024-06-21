@@ -39,8 +39,8 @@ function ProfilePage() {
     if (token) {
       const decoded = decodeJWT(token);
       if (decoded) {
-        setUser({ name: decoded.email, avatar: decoded.avatar });
-        console.log("User set:", decoded.email, decoded.avatar);
+        setUser({ name: decoded.email, avatar: decoded.avatar, id: decoded.id });
+        console.log("User set:", decoded.email, decoded.avatar, decoded.id);
       } else {
         console.error("Failed to decode token.");
       }
@@ -67,7 +67,7 @@ function ProfilePage() {
         <div className="wrapper">
           <div className="title">
             <h1>User Information</h1>
-            <Link to="/profile/update">
+            <Link to="/profile/update/${user.id}">
               <button>Update Profile</button>
             </Link>
           </div>

@@ -337,12 +337,12 @@ router.post("/user-login", (req, res) => {
         if (result.length > 0) {
             const user = result[0];
             const token = jwt.sign(
-                { email: user.user_email, name: user.user_name_surname, avatar: user.user_avatar, role: "user" },
+                { id: user.user_id, email: user.user_email, name: user.user_name_surname, avatar: user.user_avatar, role: "user" },
                 "jwt_secret_key",
                 { expiresIn: "1d" }
               );
               res.cookie("token", token);
-            return res.json({ loginStatus: true, user: { name: user.user_name_surname, avatar: user.user_avatar } });
+            return res.json({ loginStatus: true, user: {id: user.user_id, name: user.user_name_surname, avatar: user.user_avatar } });
         } else return res.json({ loginStatus: false, Error: "Wrong email or password" });
     });
 });
@@ -353,31 +353,43 @@ router.get("/logout", (req, res) => {
 })
 
 //CREATE NEW USER
-router.post("/user-register", upload.single('user_avatar'), (req, res) => {
-    console.log("Received file:", req.file);
-    console.log("Received form data:", req.body);
-    const sql = "INSERT INTO users ( role_id, user_name_surname,user_address, user_phone, user_fax, user_estate_type, user_space, user_max_rent, user_email, user_password, user_avatar, user_created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    const values = [
-        req.body.role_id,
-        req.body.user_name_surname,
-        req.body.user_address,
-        req.body.user_phone,
-        req.body.user_fax,
-        req.body.user_estate_type,
-        req.body.user_space,
-        req.body.user_max_rent,
-        req.body.user_email,
-        req.body.user_password,
-        req.file.filename, // Assuming multer has stored the file details in req.file
-        req.body.user_created_at,
-    ];
-
-    con.query(sql, values, (err, result) => {
+router.post("/user-login", (req, res) => {
+    const sql = "SELECT * FROM users WHERE user_email = ? AND user_password = ?";
+    con.query(sql, [req.body.user_email, req.body.user_password], (err, result) => {
         if (err) {
-            console.error("Error inserting agent:", err);
-            return res.status(500).json({ Status: false, Error: "Failed to insert agent." });
+            console.error("Database query error:", err);
+            return res.json({ loginStatus: false, Error: "Query error" });
         }
-        return res.json({ Status: true });
+        
+        if (result.length > 0) {
+            const user = result[0];
+            console.log("User found:", user); // Log the user object to inspect
+            
+            const token = jwt.sign(
+                { 
+                    id: user.user_id,
+                    email: user.user_email,
+                    name: user.user_name_surname,
+                    avatar: user.user_avatar,
+                    role: "user" 
+                },
+                "jwt_secret_key",
+                { expiresIn: "1d" }
+            );
+            
+            res.cookie("token", token);
+            return res.json({ 
+                loginStatus: true, 
+                user: {
+                    id: user.user_id,
+                    name: user.user_name_surname,
+                    avatar: user.user_avatar 
+                } 
+            });
+        } else {
+            console.log("No user found or wrong email/password.");
+            return res.json({ loginStatus: false, Error: "Wrong email or password" });
+        }
     });
 });
 
