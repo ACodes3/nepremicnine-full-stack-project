@@ -26,6 +26,7 @@ import EditAgent from "./AdminDashboard/AgentsDashboard/EditAgent/EditAgent";
 import EditManager from "./AdminDashboard/ManagersDashboard/EditManager/EditManager";
 import UserLogin from "./User/LoginPage/UserLogin";
 import UserRegister from "./User/RegisterPage/UserRegister";
+import UpdateUser from "./User/UpdateUser/UpdateUser";
 
 function App() {
   const router = createBrowserRouter([
@@ -80,6 +81,10 @@ function App() {
         {
           path: "/user-register",
           element: <UserRegister />,
+        },
+        {
+          path: "/profile/update/:id",
+          element: <UpdateUser />,
         },
         {
           path: "/dashboard",

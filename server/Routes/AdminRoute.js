@@ -381,4 +381,35 @@ router.post("/user-register", upload.single('user_avatar'), (req, res) => {
     });
 });
 
+//UPDATE USER
+router.get("/users/:id", (req, res) => {
+    const id = req.params.id;
+    const sql = "SELECT * FROM users WHERE user_id = ?";
+    con.query(sql, [id], (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
+router.put("/edit-user/:id", (req, res) => {
+    const id = req.params.id;
+    const sql = `UPDATE users set user_name_surname = ?, user_address = ?, user_phone = ?, user_fax = ?, user_estate_type = ?, user_space = ?, user_max_rent = ?, user_email = ?, user_password = ? Where user_id = ?`
+    const values = [
+        req.body.user_name_surname,
+        req.body.user_address,
+        req.body.user_phone,
+        req.body.user_fax,
+        req.body.user_estate_type,
+        req.body.user_space,
+        req.body.user_max_rent,
+        req.body.user_email,
+        req.body.user_password,
+        id,
+    ]
+    con.query(sql, values, (err, result) => {
+        if (err) return res.json({ Status: false, Error: err })
+        return res.json({ Status: true })
+    })
+})
+
 export { router as adminRouter }
