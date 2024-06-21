@@ -48,6 +48,19 @@ function ProfilePage() {
       console.log("No token found in cookies.");
     }
   }, []);
+
+  const handleLogout = () => {
+    axios.get("http://localhost:3000/auth/logout").then((result) => {
+      if (result.data.Status) {
+        // Remove token cookie
+        document.cookie = "token=; Max-Age=0; Path=/;";
+        setUser(null); 
+        navigate("/");
+        location.reload(); 
+      }
+    });
+  };
+
   return (
     <div className="profilePage">
       <div className="details">
@@ -69,6 +82,7 @@ function ProfilePage() {
                 <span>
                   Email: <b>{user.name}</b>
                 </span>
+                <button onClick={handleLogout}>Logout</button>
               </>
             )}
           </div>
