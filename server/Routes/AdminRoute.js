@@ -343,5 +343,38 @@ router.post("/user-login", (req, res) => {
     })
 })
 
+router.get("/logout", (req, res) => {
+    res.clearCookie("token")
+    return res.json({ Status: true })
+})
+
+//CREATE NEW USER
+router.post("/user-register", upload.single('user_avatar'), (req, res) => {
+    console.log("Received file:", req.file);
+    console.log("Received form data:", req.body);
+    const sql = "INSERT INTO users ( role_id, user_name_surname,user_address, user_phone, user_fax, user_estate_type, user_space, user_max_rent, user_email, user_password, user_avatar, user_created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    const values = [
+        req.body.role_id,
+        req.body.user_name_surname,
+        req.body.user_address,
+        req.body.user_phone,
+        req.body.user_fax,
+        req.body.user_estate_type,
+        req.body.user_space,
+        req.body.user_max_rent,
+        req.body.user_email,
+        req.body.user_password,
+        req.file.filename, // Assuming multer has stored the file details in req.file
+        req.body.user_created_at,
+    ];
+
+    con.query(sql, values, (err, result) => {
+        if (err) {
+            console.error("Error inserting agent:", err);
+            return res.status(500).json({ Status: false, Error: "Failed to insert agent." });
+        }
+        return res.json({ Status: true });
+    });
+});
 
 export { router as adminRouter }

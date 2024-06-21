@@ -1,9 +1,20 @@
 import { useState } from "react";
 import "./styles/navbar.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Navbar() {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    axios.get("http://localhost:3000/auth/logout").then((result) => {
+      if (result.data.Status) {
+        localStorage.removeItem("valid");
+        navigate("/");
+      }
+    });
+  };
 
   const user = false;
   return (
