@@ -331,17 +331,21 @@ router.get("/estates-count", (req, res) => {
 
 //USER ROUTES
 router.post("/user-login", (req, res) => {
-    const sql = "SELECT * from users Where user_email = ? and user_password = ?"
+    const sql = "SELECT * FROM users WHERE user_email = ? AND user_password = ?";
     con.query(sql, [req.body.user_email, req.body.user_password], (err, result) => {
-        if (err) return res.json({ loginStatus: false, Error: "Query error" })
+        if (err) return res.json({ loginStatus: false, Error: "Query error" });
         if (result.length > 0) {
-            const email = result[0].user_email;
-            const token = jwt.sign({ role: "admin", email: email }, "jwt_secret_key", { expiresIn: "1d" })
-            res.cookie("token", token)
-            return res.json({ loginStatus: true })
-        } else return res.json({ loginStatus: false, Error: "Wrong email or password" })
-    })
-})
+            const user = result[0];
+            const token = jwt.sign(
+                { email: user.user_email, name: user.user_name_surname, avatar: user.user_avatar, role: "user" },
+                "jwt_secret_key",
+                { expiresIn: "1d" }
+              );
+              res.cookie("token", token);
+            return res.json({ loginStatus: true, user: { name: user.user_name_surname, avatar: user.user_avatar } });
+        } else return res.json({ loginStatus: false, Error: "Wrong email or password" });
+    });
+});
 
 router.get("/logout", (req, res) => {
     res.clearCookie("token")
