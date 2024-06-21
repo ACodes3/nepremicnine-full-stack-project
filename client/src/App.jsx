@@ -24,6 +24,8 @@ import AddManager from "./AdminDashboard/ManagersDashboard/AddManager/AddManager
 import InsertAdmin from "./AdminDashboard/InsertAdmin/InsertAdmin";
 import EditAgent from "./AdminDashboard/AgentsDashboard/EditAgent/EditAgent";
 import EditManager from "./AdminDashboard/ManagersDashboard/EditManager/EditManager";
+import UserLogin from "./User/LoginPage/UserLogin";
+import UserRegister from "./User/RegisterPage/UserRegister";
 
 function App() {
   const router = createBrowserRouter([
@@ -70,6 +72,14 @@ function App() {
         {
           path: "/sign-up",
           element: <RegisterPage />,
+        },
+        {
+          path: "/user-login",
+          element: <UserLogin />,
+        },
+        {
+          path: "/user-register",
+          element: <UserRegister />,
         },
         {
           path: "/dashboard",

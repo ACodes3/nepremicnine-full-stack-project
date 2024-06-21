@@ -34,8 +34,8 @@ function Navbar() {
           </div>
         ) : (
           <>
-            <Link to="/sign-in">Sign in</Link>
-            <Link to="/sign-up" className="register">
+            <Link to="/user-login">Sign in</Link>
+            <Link to="/user-register" className="register">
               Sign up
             </Link>
           </>
