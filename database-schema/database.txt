@@ -262,6 +262,12 @@ CREATE TABLE saved_post (
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
+CREATE TABLE estate_images (
+    image_id SERIAL PRIMARY KEY,
+    image_url CHARACTER VARYING(140),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 INSERT INTO chat_types (chat_types_id, chat_type_name) VALUES
 (1, 'Private Chat'),
 (2, 'Direct Message'),
@@ -555,3 +561,13 @@ END;
 $$ LANGUAGE plpgsql;
 
 SELECT insert_manager(2, 2, 'John', 'Doe', '123 Main St', '555-1234', '555-5678', 'Male', '1980-05-15', '1234567890123', 60000, '2020-01-15', '2020-01-15', 'john_avatar.jpg');
+
+ALTER TABLE estate ADD COLUMN image_id INTEGER;
+
+ALTER TABLE estate DROP COLUMN estate_images;
+
+ALTER TABLE estate
+ADD CONSTRAINT fk_estate_images
+FOREIGN KEY (image_id) REFERENCES estate_images(image_id)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE;
