@@ -46,16 +46,22 @@ function UpdateUser() {
 
       const handleSubmit = (e) => {
         e.preventDefault();
+        setIsLoading(true); // Start loading state
         axios
           .put("http://localhost:3000/auth/edit-user/" + id, user)
           .then((result) => {
+            setIsLoading(false); // Stop loading state
             if (result.data.Status) {
               navigate("/profile");
             } else {
-              alert(result.data.Error);
+              setError(result.data.Error);
             }
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            setIsLoading(false); // Stop loading state
+            console.error(err);
+            setError("Failed to update user.");
+          });
       };
 
 

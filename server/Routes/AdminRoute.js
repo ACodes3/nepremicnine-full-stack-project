@@ -194,6 +194,206 @@ router.get('/users', (req, res) => {
     })
 })
 
+//COMBINED ESTATE, POST, POST DETAILS, ESTATE IMAGES,
+router.get('/combined-estates', (req, res) => {
+    const sql = `
+        SELECT 
+            e.*,            -- All columns from estate
+            p.*,            -- All columns from post
+            pd.*,           -- All columns from post_details
+            ei.estate_images_id,
+            ei.estate_images_name
+        FROM 
+            estate e
+        LEFT JOIN 
+            post p ON e.estate_id = p.estate_id
+        LEFT JOIN 
+            post_details pd ON p.post_id = pd.post_id
+        LEFT JOIN 
+            estate_images ei ON e.estate_id = ei.estate_id
+    `;
+    
+    con.query(sql, (err, result) => {
+        if (err) {
+            console.error("Query Error:", err);
+            return res.json({ Status: false, Error: "Query Error" });
+        }
+        
+        // Organize the result into an object where each estate has an array of images
+        const estates = {};
+        result.forEach(row => {
+            const estateId = row.estate_id;
+            if (!estates[estateId]) {
+                estates[estateId] = {
+                    ...row,
+                    images: []
+                };
+            }
+            if (row.estate_images_id) {
+                estates[estateId].images.push({
+                    estate_images_id: row.estate_images_id,
+                    estate_images_name: row.estate_images_name
+                });
+            }
+            // Remove individual image columns from the estate object
+            delete row.estate_images_id;
+            delete row.estate_images_name;
+        });
+
+        // Convert the object to an array of estates
+        const finalResult = Object.values(estates);
+
+        return res.json({ Status: true, Result: finalResult });
+    });
+});
+
+//COMBINED ESTATE, POST, POST DETAILS, ESTATE IMAGES AND AGENT
+router.get('/combined-estates-agent', (req, res) => {
+    const sql = `
+        SELECT 
+            e.*,            -- All columns from estate
+            p.*,            -- All columns from post
+            pd.*,           -- All columns from post_details
+            ei.estate_images_id,
+            ei.estate_images_name,
+            s.staff_id as agent_id,
+            s.staff_name as agent_name,
+            s.staff_surname as agent_surname,
+            s.staff_email as agent_email,
+            s.staff_phone as agent_phone,
+            s.staff_avatar as agent_avatar
+        FROM 
+            estate e
+        LEFT JOIN 
+            post p ON e.estate_id = p.estate_id
+        LEFT JOIN 
+            post_details pd ON p.post_id = pd.post_id
+        LEFT JOIN 
+            estate_images ei ON e.estate_id = ei.estate_id
+        LEFT JOIN
+            staff s ON e.staff_group_id = s.staff_group_id
+    `;
+    
+    con.query(sql, (err, result) => {
+        if (err) {
+            console.error("Query Error:", err);
+            return res.json({ Status: false, Error: "Query Error" });
+        }
+        
+        // Initialize an object to store estates with images
+        const estates = {};
+
+        // Iterate over each row in the result
+        result.forEach(row => {
+            const estateId = row.estate_id;
+
+            // If the estate is not yet in the estates object, initialize it
+            if (!estates[estateId]) {
+                estates[estateId] = {
+                    ...row,
+                    images: [],  // Initialize an array to store images
+                    agent: {     // Add agent details directly
+                        agent_id: row.agent_id,
+                        agent_name: row.agent_name,
+                        agent_surname: row.agent_surname,
+                        agent_email: row.agent_email,
+                        agent_phone: row.agent_phone,
+                        agent_avatar: row.agent_avatar
+                    }
+                };
+            }
+
+            // If there are images associated with the current row, add them to the estate's images array
+            if (row.estate_images_id) {
+                estates[estateId].images.push({
+                    estate_images_id: row.estate_images_id,
+                    estate_images_name: row.estate_images_name,
+                    estate_id: estateId  // Add estate_id to each image object
+                });
+            }
+        });
+
+        // Convert the estates object into an array of estates
+        const finalResult = Object.values(estates);
+
+        return res.json({ Status: true, Result: finalResult });
+    });
+});
+
+//FOR ONE ESTATE - Id
+router.get('/combined-estates-agent/:id', (req, res) => {
+    const estateId = req.params.id;  // Retrieve estate_id from URL parameter
+    
+    const sql = `
+        SELECT 
+            e.*,            -- All columns from estate
+            p.*,            -- All columns from post
+            pd.*,           -- All columns from post_details
+            ei.estate_images_id,
+            ei.estate_images_name,
+            s.staff_id as agent_id,
+            s.staff_name as agent_name,
+            s.staff_surname as agent_surname,
+            s.staff_email as agent_email,
+            s.staff_phone as agent_phone,
+            s.staff_avatar as agent_avatar
+        FROM 
+            estate e
+        LEFT JOIN 
+            post p ON e.estate_id = p.estate_id
+        LEFT JOIN 
+            post_details pd ON p.post_id = pd.post_id
+        LEFT JOIN 
+            estate_images ei ON e.estate_id = ei.estate_id
+        LEFT JOIN
+            staff s ON e.staff_group_id = s.staff_group_id
+        WHERE
+            e.estate_id = ?
+    `;
+    
+    con.query(sql, [estateId], (err, result) => {
+        if (err) {
+            console.error("Query Error:", err);
+            return res.json({ Status: false, Error: "Query Error" });
+        }
+        
+        if (result.length === 0) {
+            return res.json({ Status: false, Error: "Estate not found" });
+        }
+        
+        // Process the result as before
+        const estateData = result[0]; // Since only one estate should be returned
+        
+        // Construct the response object as needed
+        const estate = {
+            ...estateData,
+            images: [],  // Initialize an array to store images
+            agent: {     // Add agent details directly
+                agent_id: estateData.agent_id,
+                agent_name: estateData.agent_name,
+                agent_surname: estateData.agent_surname,
+                agent_email: estateData.agent_email,
+                agent_phone: estateData.agent_phone,
+                agent_avatar: estateData.agent_avatar
+            }
+        };
+
+        // If there are images associated with the estate, add them to the images array
+        result.forEach(row => {
+            if (row.estate_images_id) {
+                estate.images.push({
+                    estate_images_id: row.estate_images_id,
+                    estate_images_name: row.estate_images_name,
+                    estate_id: estateId
+                });
+            }
+        });
+
+        return res.json({ Status: true, Result: estate });
+    });
+});
+
+
 //POSTS
 router.get('/posts', (req, res) => {
     const sql = "SELECT * FROM post";
