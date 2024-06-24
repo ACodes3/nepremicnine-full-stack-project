@@ -382,9 +382,7 @@ router.get('/combined-estates-agent/:id', (req, res) => {
         result.forEach(row => {
             if (row.estate_images_id) {
                 estate.images.push({
-                    estate_images_id: row.estate_images_id,
                     estate_images_name: row.estate_images_name,
-                    estate_id: estateId
                 });
             }
         });

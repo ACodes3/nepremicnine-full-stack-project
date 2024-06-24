@@ -1,4 +1,3 @@
-import Slider from "../../components/Slider/Slider";
 import Map from "../../components/Map/Map";
 import "./singlepage.scss";
 
@@ -25,11 +24,50 @@ function SinglePage() {
       .catch((error) => console.error("Error fetching data:", error));
   }, [id]);
 
+  const images = estateData.images || [];
+  const mainImage = images[0]?.estate_images_name;
+  const additionalImages = images
+    .slice(1, 4)
+    .map((img) => img.estate_images_name);
+
   return (
     <div className="singlePage">
       <div className="details">
         <div className="wrapper">
-          <Slider images={singlePostData.images} />
+          <div
+            style={{
+              width: "100%",
+              height: "350px",
+              display: "flex",
+              gap: "20px",
+            }}
+          >
+            <div style={{ flex: "3" }}>
+              <img
+                src={`http://localhost:3000/Images/${mainImage}`}
+                alt="Main Estate"
+                style={{height:"350px", width:"auto", borderRadius:"10px"}}
+              />
+            </div>
+            <div
+              style={{
+                flex: "1",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                gap: "5px",
+              }}
+            >
+              {additionalImages.map((img, index) => (
+                <img
+                  key={index}
+                  src={`http://localhost:3000/Images/${img}`}
+                  alt={`Estate ${index + 1}`}
+                  style={{height:"100px", width:"auto", borderRadius:"10px"}}
+                />
+              ))}
+            </div>
+          </div>
           <div className="info">
             <div className="top">
               <div className="post">
@@ -41,7 +79,12 @@ function SinglePage() {
                 <div className="price">$ {estateData.estate_rent}</div>
               </div>
               <div className="user">
-                <img src={`http://localhost:3000/Images/` + estateData.agent_avatar} alt="user-image" />
+                <img
+                  src={
+                    `http://localhost:3000/Images/` + estateData.agent_avatar
+                  }
+                  alt="user-image"
+                />
                 <span
                   style={{
                     display: "flex",
