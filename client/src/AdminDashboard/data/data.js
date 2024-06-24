@@ -7,7 +7,7 @@ export const navigationLinks = [
     { id: 3, title: 'Branch Managers', buttonLabel: "Add Branch Manager", image: iconsImgs.bills, url: '/dashboard/managers', buttonLink: "/dashboard/add-manager" },
     { id: 4, title: 'Offices', buttonLabel: "Add Office", image: iconsImgs.budget, url: '/dashboard/offices', buttonLink: "/dashboard/add-office" },
     { id: 5, title: 'Estates', buttonLabel: "Add Estate", image: iconsImgs.wealth, url: '/dashboard/estates', buttonLink: "/dashboard/add-estate" },
-    { id: 6, title: 'Listings', buttonLabel: "Add New Listing", image: iconsImgs.plane, url: '/dashboard/listings', buttonLink: "/dashboard/add-listing" },
+    { id: 6, title: 'Add Listing', buttonLabel: "Add New Listing", image: iconsImgs.plane, url: '/dashboard/listings', buttonLink: "/dashboard/add-listing" },
     { id: 7, title: 'Account', image: iconsImgs.user, url: '/dashboard/account' },
     { id: 8, title: 'Settings', image: iconsImgs.gears, url: '/dashboard/settings' }
 ];

@@ -6,7 +6,7 @@ const ContentMain = () => {
   return (
     <div>
       <h1>
-        <ListPage/>
+        Add Listing
       </h1>
     </div>
   );

@@ -1,10 +1,11 @@
 import "../Components/ContentMain/ContentMain.css";
 import React from "react";
+import EstateCard from "../Components/EstateCard/EstateCard";
 
 const ContentMain = () => {
   return (
-    <div>
-      <h1>Estates</h1>
+    <div style={{ display: "flex", flexWrap: "wrap" }}>
+      <EstateCard/>
     </div>
   );
 };

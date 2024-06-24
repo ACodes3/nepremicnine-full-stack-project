@@ -1,0 +1,56 @@
+.upc{
+    width: 280px;
+    margin: 20px;
+    border-radius: 4px;
+    padding-bottom: 20px;
+    background: white;
+}
+
+.gradient{
+    background-image: linear-gradient(#ffffff,#ffffff);
+    height: 125px;
+    border-radius: 4px 4px 0px 0px;
+}
+
+.profile-down {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* Optional: if you want to center everything vertically as well */
+}
+
+.profile-down img{
+    height: 120px;
+    border-radius: 100px;
+    margin-top: -75px;
+    padding: 5px;
+    background: white;
+}
+
+.profile-title{
+    margin-top: 10px;
+    font-size: 26px;
+    font-weight: 600;
+    color: black;
+}
+
+.profile-description{
+    padding: 20px 20px;
+    font-size: 13px;
+    color: black;
+}
+
+.profile-button{
+    font-size: 12px;
+    background: #ff7920;
+    margin: 10px 100px;
+    padding: 10px;
+    border-radius: 20px;
+    width: max-content;
+    cursor: pointer;
+}
+
+.profile-button a{
+    text-decoration: none;
+    color: white;
+}
