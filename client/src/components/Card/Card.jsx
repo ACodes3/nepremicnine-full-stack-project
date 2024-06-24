@@ -2,29 +2,33 @@ import "./card.scss";
 import { Link } from "react-router-dom";
 
 function Card({ item }) {
+  const firstImage = item.images[0].estate_images_name;
   return (
     <div className="card">
-      <Link to={`/${item.id}`} className="imageContainer">
-        <img src={item.images} alt="card-image" />
+      <Link to={`/${item.estate_id}`} className="imageContainer">
+        <img
+          src={`http://localhost:3000/Images/${firstImage}`}
+          alt="card-image"
+        />
       </Link>
       <div className="textContainer">
         <h2 className="title">
-          <Link to={`/${item.id}`}>{item.title}</Link>
+          <Link to={`/${item.estate_id}`}>{item.post_title}</Link>
         </h2>
         <p className="address">
           <img src="/pin.png" alt="address-img" />
-          <span>{item.address}</span>
+          <span>{item.estate_address}</span>
         </p>
-        <p className="price">${item.price}</p>
+        <p className="price">${item.estate_rent}</p>
         <div className="bottom">
           <div className="features">
             <div className="feature">
               <img src="/bed.png" alt="bed" />
-              <span>{item.bedroom} bedroom</span>
+              <span>{item.estate_bedrooms} bedroom</span>
             </div>
             <div className="feature">
               <img src="/bath.png" alt="bathroom" />
-              <span>{item.bathroom} bathrooms</span>
+              <span>{item.estate_bathrooms} bathrooms</span>
             </div>
           </div>
           <div className="icons">
