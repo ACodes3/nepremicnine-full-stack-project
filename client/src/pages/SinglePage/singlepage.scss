@@ -88,6 +88,11 @@
               border-radius: 50%;
               object-fit: cover;
             }
+            span{
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
           }
         }
         .bottom {

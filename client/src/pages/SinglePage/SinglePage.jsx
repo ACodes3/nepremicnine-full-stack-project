@@ -3,8 +3,28 @@ import Map from "../../components/Map/Map";
 import "./singlepage.scss";
 
 import { singlePostData, userData } from "../../lib/dummydata";
+import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 function SinglePage() {
+  const { id } = useParams();
+  const [estateData, setEstateData] = useState([]);
+
+  useEffect(() => {
+    // Fetch data from your API endpoint
+    fetch("http://localhost:3000/auth/combined-estates-agent/" + id)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.Status) {
+          // Set the fetched data to state
+          setEstateData(data.Result);
+        } else {
+          console.error("Error fetching data:", data.Error);
+        }
+      })
+      .catch((error) => console.error("Error fetching data:", error));
+  }, [id]);
+
   return (
     <div className="singlePage">
       <div className="details">
@@ -13,19 +33,28 @@ function SinglePage() {
           <div className="info">
             <div className="top">
               <div className="post">
-                <h1>{singlePostData.title}</h1>
+                <h1>{estateData.post_title}</h1>
                 <div className="address">
                   <img src="/pin.png" alt="address" />
-                  <span>{singlePostData.address}</span>
+                  <span>{estateData.estate_address}</span>
                 </div>
-                <div className="price">$ {singlePostData.price}</div>
+                <div className="price">$ {estateData.estate_rent}</div>
               </div>
               <div className="user">
-                <img src={userData.img} alt="user-image" />
-                <span>{userData.name}</span>
+                <img src={`http://localhost:3000/Images/` + estateData.agent_avatar} alt="user-image" />
+                <span
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  {estateData.agent_name} {estateData.agent_surname}
+                </span>
+                <span>{estateData.agent_phone}</span>
               </div>
             </div>
-            <div className="bottom">{singlePostData.description}</div>
+            <div className="bottom">{estateData.post_detail_desc}</div>
           </div>
         </div>
       </div>
@@ -37,7 +66,7 @@ function SinglePage() {
               <img src="/utility.png" alt="" />
               <div className="featureText">
                 <span>Utilities</span>
-                <p>Renter is Responsible</p>
+                <p>{estateData.post_detail_utilities}</p>
               </div>
             </div>
           </div>
@@ -46,7 +75,7 @@ function SinglePage() {
               <img src="/fee.png" alt="" />
               <div className="featureText">
                 <span>Property Fees</span>
-                <p>Must have 3x the rent in total household income</p>
+                <p>{estateData.post_detail_income}</p>
               </div>
             </div>
           </div>
@@ -55,7 +84,7 @@ function SinglePage() {
               <img src="/pet.png" alt="" />
               <div className="featureText">
                 <span>Pet Policy</span>
-                <p>Pets Allowed</p>
+                <p>{estateData.post_detail_pets}</p>
               </div>
             </div>
           </div>
@@ -63,15 +92,15 @@ function SinglePage() {
           <div className="sizes">
             <div className="size">
               <img src="/size.png" alt="" />
-              <span>80 sqrf</span>
+              <span>{estateData.estate_quadrature} sqrf</span>
             </div>
             <div className="size">
               <img src="/bed.png" alt="" />
-              <span>2 beds</span>
+              <span>{estateData.estate_bedrooms} beds</span>
             </div>
             <div className="size">
               <img src="/bath.png" alt="" />
-              <span>1 bathroom</span>
+              <span>{estateData.estate_bathrooms} bathroom</span>
             </div>
           </div>
           <p className="title">Nearby Places</p>
@@ -80,21 +109,21 @@ function SinglePage() {
               <img src="/school.png" alt="" />
               <div className="featureText">
                 <span>School</span>
-                <p>250m away</p>
+                <p>{estateData.post_detail_schools} km away</p>
               </div>
             </div>
             <div className="feature">
               <img src="/bus.png" alt="" />
               <div className="featureText">
                 <span>Bus Stop</span>
-                <p>100m away</p>
+                <p>{estateData.post_detail_bus} km away</p>
               </div>
             </div>
             <div className="feature">
               <img src="/restaurant.png" alt="" />
               <div className="featureText">
                 <span>Restaurant</span>
-                <p>200m away</p>
+                <p>{estateData.post_detail_restaurant} km away</p>
               </div>
             </div>
           </div>
