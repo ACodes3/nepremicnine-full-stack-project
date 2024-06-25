@@ -1,13 +1,12 @@
 import "../Components/ContentMain/ContentMain.css";
 import React from "react";
 import ListPage from "./ListPage";
+import NewPostPage from "./newPostPage/NewPostPage";
 
 const ContentMain = () => {
   return (
     <div>
-      <h1>
-        Add Listing
-      </h1>
+      <NewPostPage />
     </div>
   );
 };

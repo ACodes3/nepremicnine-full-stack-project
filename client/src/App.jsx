@@ -27,6 +27,7 @@ import EditManager from "./AdminDashboard/ManagersDashboard/EditManager/EditMana
 import UserLogin from "./User/LoginPage/UserLogin";
 import UserRegister from "./User/RegisterPage/UserRegister";
 import UpdateUser from "./User/UpdateUser/UpdateUser";
+import InsertEstate from "./AdminDashboard/EstateDashboard/InsertEstate/InsertEstate";
 
 function App() {
   const router = createBrowserRouter([
@@ -132,6 +133,10 @@ function App() {
             {
               path: "/dashboard/add-admin",
               element: <InsertAdmin />,
+            },
+            {
+              path: "/dashboard/add-estate",
+              element: <InsertEstate />,
             },
             {
               path: "/dashboard/edit-agent/:id",

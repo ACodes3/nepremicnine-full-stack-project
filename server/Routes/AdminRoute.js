@@ -130,6 +130,36 @@ router.post("/add-admin", upload.single('admin_avatar'), (req, res) => {
     });
 });
 
+//INSERT ESTATE
+router.post("/add-estate", (req, res) => {
+    console.log("Received form data:", req.body);
+    const sql = "INSERT INTO estate (owner_id, staff_group_id, estate_address, estate_type, estate_bedrooms, estate_quadrature, estate_rent, estate_city, estate_bathrooms, estate_latitude, estate_longitude, estate_property) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    const values = [
+        req.body.owner_id,
+        req.body.staff_group_id,
+        req.body.estate_address,
+        req.body.estate_type,
+        req.body.estate_bedrooms,
+        req.body.estate_quadrature,
+        req.body.estate_rent,
+        req.body.estate_city,
+        req.body.estate_bathrooms,
+        req.body.estate_latitude,
+        req.body.estate_longitude,
+        req.body.estate_property
+    ];
+
+    console.log("Values to insert:", values);
+
+    con.query(sql, values, (err, result) => {
+        if (err) {
+            console.error("Error inserting estate:", err);
+            return res.status(500).json({ Status: false, Error: "Failed to insert estate." });
+        }
+        return res.json({ Status: true });
+    });
+});
+
 //GET ROUTES
 //MANAGERS
 router.get('/managers', (req, res) => {
@@ -188,6 +218,15 @@ router.get('/estates', (req, res) => {
 //USERS
 router.get('/users', (req, res) => {
     const sql = "SELECT * FROM users";
+    con.query(sql, (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
+//OWNERS
+router.get('/owners', (req, res) => {
+    const sql = "SELECT * FROM owners";
     con.query(sql, (err, result) => {
         if (err) return res.json({ Status: false, Error: "Query Error" })
         return res.json({ Status: true, Result: result })
