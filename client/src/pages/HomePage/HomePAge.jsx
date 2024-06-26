@@ -3,16 +3,6 @@ import "./homepage.scss";
 import { useState, useEffect } from "react";
 
 function HomePage() {
-  {
-    /*const [message, setMessage] = useState('');
-
-    useEffect(() => {
-        fetch('http://localhost:3000/api/test')
-            .then(response => response.json())
-            .then(data => setMessage(data.message))
-            .catch(error => console.error('Error fetching data:', error));
-    }, []);*/
-  }
   return (
     <div className="homePage">
       <div className="textContainer">
@@ -39,9 +29,6 @@ function HomePage() {
               <h2>Properties</h2>
             </div>
           </div>
-          {/*<div>
-            <h3>{message}</h3>
-        </div>*/}
         </div>
       </div>
       <div className="imgContainer">
