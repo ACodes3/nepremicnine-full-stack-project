@@ -591,11 +591,11 @@ GRANT ALL PRIVILEGES ON DATABASE a_real_estate_20240605 TO admins;
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO admins;
 
 
--- podelitev privilegijev veterinarjem
+-- podelitev privilegijev menagerjem
 GRANT SELECT, INSERT, UPDATE ON chat, estate, post, post_details TO managers;
 
 
--- Dodelitev privilegijev lastnikom
+-- Dodelitev privilegijev zaposlenih
 GRANT SELECT, INSERT, UPDATE, DELETE ON chat, estate, message, estate_images TO staff;
 
 
