@@ -746,4 +746,37 @@ router.put("/edit-user/:id", (req, res) => {
     })
 })
 
+//CHATS
+//READ
+router.get("/chats", (req, res) => {
+    const id = req.params.id;
+    const sql = "SELECT * FROM chat";
+    con.query(sql, [id], (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
+router.post("/add-chat", (req, res) => {
+    console.log("Received form data:", req.body);
+    const sql = "INSERT INTO chat (chat_type_id, user_id, staff_id, chat_last_message) VALUES (?, ?, ?, ?)";
+    const values = [
+        req.body.office_branch_id,
+        req.body.staff_id,
+        req.body.estate_id,
+        req.body.post_title,
+        req.body.post_created_at,
+    ];
+
+    console.log("Values to insert:", values);
+
+    con.query(sql, values, (err, result) => {
+        if (err) {
+            console.error("Error inserting estate:", err);
+            return res.status(500).json({ Status: false, Error: "Failed to insert estate." });
+        }
+        return res.json({ Status: true });
+    });
+});
+
 export { router as adminRouter }
