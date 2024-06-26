@@ -17,7 +17,7 @@ const NewPostPage = () => {
     <div className="containerDiv">
       <div className="firstDiv">
         <button onClick={handleShowPostForm}>Add Post</button>
-        <button onClick={handleShowPostDescriptionForm}>Add Post Description</button>
+        <button onClick={handleShowPostDescriptionForm}>Add Post Details</button>
         <button onClick={handleShowPostImagesForm}>Add Post Images</button>
       </div>
       

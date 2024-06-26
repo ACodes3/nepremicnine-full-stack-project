@@ -160,6 +160,78 @@ router.post("/add-estate", (req, res) => {
     });
 });
 
+// INSERT POST
+router.post("/add-post", (req, res) => {
+    console.log("Received form data:", req.body);
+    const sql = "INSERT INTO post (office_branch_id, staff_id, estate_id, post_title, post_created_at) VALUES (?, ?, ?, ?, ?)";
+    const values = [
+        req.body.office_branch_id,
+        req.body.staff_id,
+        req.body.estate_id,
+        req.body.post_title,
+        req.body.post_created_at,
+    ];
+
+    console.log("Values to insert:", values);
+
+    con.query(sql, values, (err, result) => {
+        if (err) {
+            console.error("Error inserting estate:", err);
+            return res.status(500).json({ Status: false, Error: "Failed to insert estate." });
+        }
+        return res.json({ Status: true });
+    });
+});
+
+//INSERT POST DESCRIPTION
+router.post("/add-post-description", (req, res) => {
+    console.log("Received form data:", req.body);
+    
+    const sql = "INSERT INTO post_details (post_id, post_detail_desc, post_detail_utilities, post_detail_pets, post_detail_income, post_detail_size, post_detail_schools, post_detail_bus, post_detail_restaurant) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    
+    const values = [
+        req.body.post_id,
+        req.body.post_detail_desc,
+        req.body.post_detail_utilities,
+        req.body.post_detail_pets,
+        req.body.post_detail_income,
+        req.body.post_detail_size,
+        req.body.post_detail_schools,
+        req.body.post_detail_bus,
+        req.body.post_detail_restaurant,
+    ];
+
+    console.log("Values to insert:", values);
+
+    con.query(sql, values, (err, result) => {
+        if (err) {
+            console.error("Error inserting estate:", err);
+            return res.status(500).json({ Status: false, Error: "Failed to insert estate." });
+        }
+        return res.json({ Status: true });
+    });
+});
+
+// INSERT POST IMAGES
+router.post("/add-post-images", upload.single('estate_images_name'), (req, res) => {
+    console.log("Received form data:", req.body);
+    const sql = "INSERT INTO estate_images (estate_images_name, estate_id) VALUES (?, ?)";
+    const values = [
+        req.file.filename,
+        req.body.estate_id,
+    ];
+
+    console.log("Values to insert:", values);
+
+    con.query(sql, values, (err, result) => {
+        if (err) {
+            console.error("Error inserting estate:", err);
+            return res.status(500).json({ Status: false, Error: "Failed to insert estate." });
+        }
+        return res.json({ Status: true });
+    });
+});
+
 //GET ROUTES
 //MANAGERS
 router.get('/managers', (req, res) => {
@@ -182,6 +254,15 @@ router.get('/staff-type', (req, res) => {
 //STAFF GROUP
 router.get('/staff-group', (req, res) => {
     const sql = "SELECT * FROM staff_group";
+    con.query(sql, (err, result) => {
+        if (err) return res.json({ Status: false, Error: "Query Error" })
+        return res.json({ Status: true, Result: result })
+    })
+})
+
+//STAFF
+router.get('/staff', (req, res) => {
+    const sql = "SELECT * FROM staff";
     con.query(sql, (err, result) => {
         if (err) return res.json({ Status: false, Error: "Query Error" })
         return res.json({ Status: true, Result: result })
