@@ -5,7 +5,7 @@ import "./InserAgentCard.scss";
 
 const PostImagesForm = () => {
   const [postImages, setPostImages] = useState({
-    estate_images_name: "",
+    estate_images_name: [],
     estate_id: "",
   });
 
@@ -28,7 +28,11 @@ const PostImagesForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("estate_images_name", postImages.estate_images_name);
+
+    postImages.estate_images_names.forEach((file, index) => {
+      formData.append("estate_images_name", file);
+    });
+
     formData.append("estate_id", postImages.estate_id);
 
     axios
@@ -47,7 +51,6 @@ const PostImagesForm = () => {
       })
       .catch((err) => console.log(err));
   };
-
   return (
     <div className="insert-agent-card">
       <div className="grid-two-item grid-common grid-c4">
@@ -61,28 +64,29 @@ const PostImagesForm = () => {
           >
             <div className="col-12 mb-3">
               <label className="form-label" htmlFor="estate_images_name">
-                Select Image
+                Select Images
               </label>
               <input
                 type="file"
                 className="form-control rounded-0"
                 id="estate_images_name"
                 name="estate_images_name"
+                multiple
                 onChange={(e) =>
                   setPostImages({
                     ...postImages,
-                    estate_images_name: e.target.files[0],
+                    estate_images_names: Array.from(e.target.files),
                   })
                 }
               />
             </div>
             <div className="grid-items">
-              <label htmlFor="post_id" className="grid-item-l w-100">
+              <label htmlFor="estate_id" className="grid-item-l w-100">
                 Images for Estate:
               </label>
               <select
-                name="post_id"
-                id="post_id"
+                name="estate_id"
+                id="estate_id"
                 className="form-select"
                 onChange={(e) =>
                   setPostImages({ ...postImages, estate_id: e.target.value })
@@ -97,151 +101,7 @@ const PostImagesForm = () => {
             </div>
             <div className="col-12">
               <button type="submit" className="btn btn-primary w-100">
-                Add Image
-              </button>
-            </div>
-          </form>
-          <form
-            className="grid-c4-content bg-jet"
-            style={{ backgroundColor: "#d78d42" }}
-            onSubmit={handleSubmit}
-            encType="multipart/form-data"
-          >
-            <div className="col-12 mb-3">
-              <label className="form-label" htmlFor="post_images_name">
-                Select Image
-              </label>
-              <input
-                type="file"
-                className="form-control rounded-0"
-                id="post_images_name"
-                name="post_images_name"
-                onChange={(e) =>
-                  setPostImages({
-                    ...postImages,
-                    post_images_name: e.target.files[0],
-                  })
-                }
-              />
-            </div>
-            <div className="grid-items">
-              <label htmlFor="post_id" className="grid-item-l w-100">
-                Images for Estate:
-              </label>
-              <select
-                name="post_id"
-                id="post_id"
-                className="form-select"
-                onChange={(e) =>
-                  setPostImages({ ...postImages, estate_id: e.target.value })
-                }
-              >
-                {estate.map((estat) => (
-                  <option value={estat.estate_id} key={estat.estate_id}>
-                    {estat.estate_address}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="col-12">
-              <button type="submit" className="btn btn-primary w-100">
-                Add Image
-              </button>
-            </div>
-          </form>
-          <form
-            className="grid-c4-content bg-jet"
-            style={{ backgroundColor: "#d78d42" }}
-            onSubmit={handleSubmit}
-            encType="multipart/form-data"
-          >
-            <div className="col-12 mb-3">
-              <label className="form-label" htmlFor="post_images_name">
-                Select Image
-              </label>
-              <input
-                type="file"
-                className="form-control rounded-0"
-                id="post_images_name"
-                name="post_images_name"
-                onChange={(e) =>
-                  setPostImages({
-                    ...postImages,
-                    post_images_name: e.target.files[0],
-                  })
-                }
-              />
-            </div>
-            <div className="grid-items">
-              <label htmlFor="post_id" className="grid-item-l w-100">
-                Images for Estate:
-              </label>
-              <select
-                name="post_id"
-                id="post_id"
-                className="form-select"
-                onChange={(e) =>
-                  setPostImages({ ...postImages, estate_id: e.target.value })
-                }
-              >
-                {estate.map((estat) => (
-                  <option value={estat.estate_id} key={estat.estate_id}>
-                    {estat.estate_address}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="col-12">
-              <button type="submit" className="btn btn-primary w-100">
-                Add Image
-              </button>
-            </div>
-          </form>
-          <form
-            className="grid-c4-content bg-jet"
-            style={{ backgroundColor: "#d78d42" }}
-            onSubmit={handleSubmit}
-            encType="multipart/form-data"
-          >
-            <div className="col-12 mb-3">
-              <label className="form-label" htmlFor="post_images_name">
-                Select Image
-              </label>
-              <input
-                type="file"
-                className="form-control rounded-0"
-                id="post_images_name"
-                name="post_images_name"
-                onChange={(e) =>
-                  setPostImages({
-                    ...postImages,
-                    post_images_name: e.target.files[0],
-                  })
-                }
-              />
-            </div>
-            <div className="grid-items">
-              <label htmlFor="post_id" className="grid-item-l w-100">
-                Images for Estate:
-              </label>
-              <select
-                name="post_id"
-                id="post_id"
-                className="form-select"
-                onChange={(e) =>
-                  setPostImages({ ...postImages, estate_id: e.target.value })
-                }
-              >
-                {estate.map((estat) => (
-                  <option value={estat.estate_id} key={estat.estate_id}>
-                    {estat.estate_address}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="col-12">
-              <button type="submit" className="btn btn-primary w-100">
-                Add Image
+                Add Images
               </button>
             </div>
           </form>

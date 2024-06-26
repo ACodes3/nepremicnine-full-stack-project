@@ -213,20 +213,24 @@ router.post("/add-post-description", (req, res) => {
 });
 
 // INSERT POST IMAGES
-router.post("/add-post-images", upload.single('estate_images_name'), (req, res) => {
+router.post("/add-post-images", upload.array('estate_images_name', 4), (req, res) => {
     console.log("Received form data:", req.body);
-    const sql = "INSERT INTO estate_images (estate_images_name, estate_id) VALUES (?, ?)";
-    const values = [
-        req.file.filename,
-        req.body.estate_id,
-    ];
+    console.log("Received file data:", req.files);
 
-    console.log("Values to insert:", values);
+    if (!req.files || req.files.length === 0) {
+        return res.status(400).json({ Status: false, Error: "No files uploaded." });
+    }
 
-    con.query(sql, values, (err, result) => {
+    const estate_id = req.body.estate_id;
+    const fileNames = req.files.map(file => file.filename);
+
+    const sql = "INSERT INTO estate_images (estate_images_name, estate_id) VALUES ?";
+    const values = fileNames.map(fileName => [fileName, estate_id]);
+
+    con.query(sql, [values], (err, result) => {
         if (err) {
-            console.error("Error inserting estate:", err);
-            return res.status(500).json({ Status: false, Error: "Failed to insert estate." });
+            console.error("Error inserting estate images:", err);
+            return res.status(500).json({ Status: false, Error: "Failed to insert estate images." });
         }
         return res.json({ Status: true });
     });
