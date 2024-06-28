@@ -709,5 +709,229 @@ SELECT * FROM admin_change_log
 WHERE changed_at BETWEEN '2024-01-01' AND '2024-06-30'
 ORDER BY changed_at DESC;
 
+--Dodatne naloge iz seminarske
+--Odpiranje evidenc posameznih zaposlenih +
+SELECT m.manager_id,
+       m.manager_name,
+       m.manager_surname,
+       m.manager_address,
+       m.manager_phone,
+       m.manager_pay,
+       m.manager_start_date,
+       r.role_id
+FROM manager m
+JOIN role r ON m.role_id = r.role_id
+WHERE r.role_id = 3;
 
+--Posodabljanje evidenc posameznih zaposlenih +
+UPDATE manager
+SET manager_pay = 80000,
+    manager_phone = '555 9999'
+WHERE manager_id = 1 AND
+      role_id = (SELECT role_id FROM role WHERE role_id = 2 );
 
+--Navedemo vse zaposlene pod vsakim "vodjo urada" in "podpredsednikom" ---
+SELECT sg.staff_group_id,
+       m.manager_id,
+       m.manager_name,
+       m.manager_surname,
+       r.role_id,
+       s.staff_id,
+       s.staff_name,
+       s.staff_surname
+FROM staff_group sg
+JOIN manager m ON sg.manager_id = m.manager_id
+JOIN role r ON m.role_id = r.role_id
+JOIN staff s ON sg.staff_group_id = s.staff_group_id
+WHERE r.role_id IN (3);
+
+--Seznam delavcev v vsaki podružnici +
+SELECT ob.office_branch_id,
+       ob.office_city,
+       ob.office_municipality,
+       ob.office_postcode,
+       sg.staff_group_id,
+       m.manager_id,
+       m.manager_name AS manager_first_name,
+       m.manager_surname AS manager_last_name,
+       s.staff_id,
+       s.staff_name AS staff_first_name,
+       s.staff_surname AS staff_last_name,
+       s.staff_email,
+       r.role_id
+FROM office_branch ob
+JOIN staff_group sg ON ob.staff_group_id = sg.staff_group_id
+JOIN manager m ON sg.manager_id = m.manager_id
+JOIN staff s ON sg.staff_group_id = s.staff_group_id
+JOIN role r ON s.role_id = r.role_id
+ORDER BY ob.office_branch_id, r.role_id, s.staff_name;
+
+--Število delavcev v vsaki podružnici +
+SELECT ob.office_branch_id,
+       ob.office_city,
+       COUNT(s.staff_id) AS total_workers
+FROM office_branch ob
+JOIN staff_group sg ON ob.staff_group_id = sg.staff_group_id
+JOIN staff s ON sg.staff_group_id = s.staff_group_id
+GROUP BY ob.office_branch_id, ob.office_city
+ORDER BY total_workers DESC;
+
+--Povprečna plača delavcev v posamezni panogi +
+SELECT ob.office_branch_id,
+       ob.office_city,
+       AVG(s.staff_pay) AS average_salary
+FROM office_branch ob
+JOIN staff_group sg ON ob.staff_group_id = sg.staff_group_id
+JOIN staff s ON sg.staff_group_id = s.staff_group_id
+GROUP BY ob.office_branch_id, ob.office_city
+ORDER BY average_salary DESC;
+
+--Podatki o delavcih z njihovimi vlogami v vsaki podružnici +
+SELECT ob.office_branch_id,
+       ob.office_city,
+       s.staff_id,
+       s.staff_name,
+       s.staff_surname,
+       s.staff_email,
+       r.role_id
+FROM office_branch ob
+JOIN staff_group sg ON ob.staff_group_id = sg.staff_group_id
+JOIN staff s ON sg.staff_group_id = s.staff_group_id
+JOIN role r ON s.role_id = r.role_id
+ORDER BY ob.office_branch_id, r.role_id, s.staff_name;
+
+--Porazdelitev plač po panogah +
+SELECT ob.office_branch_id,
+       ob.office_city,
+       s.staff_name,
+       s.staff_surname,
+       s.staff_pay
+FROM office_branch ob
+JOIN staff_group sg ON ob.staff_group_id = sg.staff_group_id
+JOIN staff s ON sg.staff_group_id = s.staff_group_id
+ORDER BY ob.office_branch_id, s.staff_pay DESC;
+
+--Podrobno poročilo za določeno podružnico +
+SELECT ob.office_branch_id,
+       ob.office_city,
+       ob.office_municipality,
+       ob.office_postcode,
+       m.manager_name AS manager_first_name,
+       m.manager_surname AS manager_last_name,
+       r.role_id,
+       s.staff_id,
+       s.staff_name AS staff_first_name,
+       s.staff_surname AS staff_last_name,
+       s.staff_email,
+       s.staff_pay,
+       s.staff_start_date
+FROM office_branch ob
+JOIN staff_group sg ON ob.staff_group_id = sg.staff_group_id
+JOIN manager m ON sg.manager_id = m.manager_id
+JOIN staff s ON sg.staff_group_id = s.staff_group_id
+JOIN role r ON s.role_id = r.role_id
+WHERE ob.office_branch_id = 1 -- Replace with the specific office_branch_id
+ORDER BY s.staff_name;
+
+--Seznam delavcev v skupini z njihovim vodjo +
+SELECT
+    sg.staff_group_id AS group_id,
+    m.manager_id,
+    CONCAT(m.manager_name, ' ', m.manager_surname) AS manager_full_name,
+    s.staff_id,
+    CONCAT(s.staff_name, ' ', s.staff_surname) AS staff_full_name,
+    r.role_id AS staff_role
+FROM
+    staff_group sg
+JOIN
+    manager m ON sg.manager_id = m.manager_id
+JOIN
+    staff s ON sg.staff_group_id = s.staff_group_id
+JOIN
+    role r ON s.role_id = r.role_id
+ORDER BY
+    sg.staff_group_id, s.staff_name;
+
+--Seznam nepremičnin, ki so na voljo za oddajo v najem, s podatki o lastniku in podatki o podružnici +
+SELECT
+    e.estate_id,
+    e.estate_address,
+    e.estate_city,
+    e.estate_type,
+    e.estate_bedrooms,
+    e.estate_square_footage,
+    e.estate_rent,
+    o.owner_id,
+    o.owner_name,
+    ob.office_branch_id,
+    ob.office_city,
+    ob.office_municipality,
+    ob.office_postcode
+FROM
+    estate e
+JOIN
+    owner o ON e.owner_id = o.owner_id
+JOIN
+    staff_group sg ON e.staff_group_id = sg.staff_group_id
+JOIN
+    office_branch ob ON sg.staff_group_id = ob.staff_group_id
+WHERE
+    e.estate_property = 'Residential'
+ORDER BY
+    ob.office_branch_id, e.estate_city, e.estate_address;
+
+--Podrobno poročilo o nepremičninah za določeno podružnico +
+SELECT
+    e.estate_id,
+    e.estate_address,
+    e.estate_city,
+    e.estate_type,
+    e.estate_bedrooms,
+    e.estate_square_footage,
+    e.estate_rent,
+    o.owner_id,
+    o.owner_name,
+    CONCAT(m.manager_name, ' ', m.manager_surname) AS manager_full_name
+FROM
+    estate e
+JOIN
+    owner o ON e.owner_id = o.owner_id
+JOIN
+    staff_group sg ON e.staff_group_id = sg.staff_group_id
+JOIN
+    office_branch ob ON sg.staff_group_id = ob.staff_group_id
+JOIN
+    manager m ON sg.manager_id = m.manager_id
+WHERE
+    e.estate_property = 'Residential'
+    AND ob.office_branch_id = 1
+ORDER BY
+    e.estate_city, e.estate_address;
+
+--iskanje in izdelava seznama vseh nepremičnin, ki so zadovoljujejo zahteve določene stranke +
+SELECT *
+FROM estate e
+JOIN owner o ON e.owner_id = o.owner_id
+WHERE e.estate_city = 'Somecity'
+  AND e.estate_type = 'Apartment'
+  AND e.estate_bedrooms >= 1
+  AND e.estate_rent <= 2000;
+
+-- izdelava poročila o komentarjih potencialnih strank glede določenega objekta
+SELECT
+    e.estate_id,
+    e.estate_address,
+    e.estate_type,
+    e.estate_city,
+    e.estate_square_footage,
+    e.estate_rent,
+    u.user_name_surname AS customer_name,
+    i.interview_comments AS customer_comments
+FROM
+    estate e
+JOIN
+    interview i ON e.staff_group_id = i.staff_id
+JOIN
+    users u ON i.user_id = u.user_id
+WHERE
+    e.estate_id = 22;
