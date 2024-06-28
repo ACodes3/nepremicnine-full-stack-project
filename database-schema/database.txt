@@ -611,6 +611,27 @@ FROM admin
 JOIN role ON admin.role_id = role.role_id
 GROUP BY role.role_name;
 
+--Funkcija
+CREATE OR REPLACE FUNCTION GetAdminRoleAveragePay()
+RETURNS TABLE (
+    role_name VARCHAR(100),
+    average_pay DECIMAL(10, 2)
+)
+AS
+$$
+BEGIN
+    RETURN QUERY
+    SELECT r.role_name,
+           AVG(a.admin_pay) AS average_pay
+    FROM admin a
+    JOIN role r ON a.role_id = r.role_id
+    GROUP BY r.role_name;
+END
+$$
+LANGUAGE PLPGSQL;
+
+SELECT * FROM GetAdminRoleAveragePay();
+
 --Skupno število uporabnikov in osebja
 SELECT COUNT(*) AS total_users FROM users;
 
@@ -629,6 +650,30 @@ SELECT manager_name, manager_surname, manager_pay
 FROM manager
 ORDER BY manager_pay DESC
 LIMIT 5;
+
+--Funkcija
+CREATE OR REPLACE FUNCTION GetTopPaidManagers()
+RETURNS TABLE (
+    manager_name VARCHAR(100),
+    manager_surname VARCHAR(100),
+    manager_pay DECIMAL(10, 2)
+)
+AS
+$$
+BEGIN
+    RETURN QUERY
+    SELECT m.manager_name,
+           m.manager_surname,
+           m.manager_pay::DECIMAL(10, 2)
+    FROM manager m
+    ORDER BY m.manager_pay DESC
+    LIMIT 5;
+END
+$$
+LANGUAGE PLPGSQL;
+
+
+SELECT * FROM GetTopPaidManagers();
 
 --Porazdelitev nepremičnin po mestih
 SELECT estate_city, COUNT(*) AS estate_count
@@ -654,6 +699,28 @@ FROM saved_post
 JOIN users ON saved_post.user_id = users.user_id
 GROUP BY users.user_name_surname
 ORDER BY saved_post_count DESC;
+
+--Funkcija
+CREATE OR REPLACE FUNCTION GetUserSavedPostCount()
+RETURNS TABLE (
+    user_name_surname VARCHAR(255),
+    saved_post_count BIGINT  -- Adjust data type as per your actual data
+)
+AS
+$$
+BEGIN
+    RETURN QUERY
+    SELECT u.user_name_surname,
+           COUNT(sp.saved_post_id) AS saved_post_count
+    FROM saved_post sp
+    JOIN users u ON sp.user_id = u.user_id
+    GROUP BY u.user_name_surname
+    ORDER BY saved_post_count DESC;
+END
+$$
+LANGUAGE PLPGSQL;
+
+SELECT * FROM GetUserSavedPostCount();
 
 --Koraki za ustvarjanje dnevnika sprememb za tabelo administratorja
 --Ustvarjanje tabele dnevnika sprememb
