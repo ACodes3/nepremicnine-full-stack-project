@@ -591,11 +591,11 @@ GRANT ALL PRIVILEGES ON DATABASE a_real_estate_20240605 TO admins;
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO admins;
 
 
--- podelitev privilegijev menagerjem
+-- podelitev privilegijev veterinarjem
 GRANT SELECT, INSERT, UPDATE ON chat, estate, post, post_details TO managers;
 
 
--- Dodelitev privilegijev zaposlenih
+-- Dodelitev privilegijev lastnikom
 GRANT SELECT, INSERT, UPDATE, DELETE ON chat, estate, message, estate_images TO staff;
 
 
@@ -603,3 +603,111 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON chat, estate, message, estate_images TO 
 GRANT admins TO Aljaz;
 GRANT managers TO Aspasija;
 GRANT staff TO Andrej;
+
+--Statistične strežniške funkcije
+--Povprečno plačilo za administratorja
+SELECT role.role_name, AVG(admin.admin_pay) AS average_pay
+FROM admin
+JOIN role ON admin.role_id = role.role_id
+GROUP BY role.role_name;
+
+--Skupno število uporabnikov in osebja
+SELECT COUNT(*) AS total_users FROM users;
+
+SELECT COUNT(*) AS total_staff FROM staff;
+
+--Standardni odklon plač osebja
+SELECT STDDEV(staff_pay) AS pay_std_dev
+FROM staff;
+
+--Srednja hitrost pisanja tajnic
+SELECT PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY secretary_writing_speed) AS median_writing_speed
+FROM secretary;
+
+--Top 5 najbolje plačanih menedžerjev
+SELECT manager_name, manager_surname, manager_pay
+FROM manager
+ORDER BY manager_pay DESC
+LIMIT 5;
+
+--Porazdelitev nepremičnin po mestih
+SELECT estate_city, COUNT(*) AS estate_count
+FROM estate
+GROUP BY estate_city
+ORDER BY estate_count DESC;
+
+--Skupna in povprečna najemnina glede na vrsto lastnika (podjetje in posameznik)
+SELECT
+    CASE
+        WHEN estate.owner_id IN (SELECT owner_id FROM company) THEN 'Company'
+        WHEN estate.owner_id IN (SELECT owner_id FROM individual) THEN 'Individual'
+    END AS owner_type,
+    COUNT(*) AS estate_count,
+    AVG(estate_rent) AS average_rent,
+    SUM(estate_rent) AS total_rent
+FROM estate
+GROUP BY owner_type;
+
+--Skupno število shranjenih objav na uporabnika
+SELECT users.user_name_surname, COUNT(saved_post.saved_post_id) AS saved_post_count
+FROM saved_post
+JOIN users ON saved_post.user_id = users.user_id
+GROUP BY users.user_name_surname
+ORDER BY saved_post_count DESC;
+
+--Koraki za ustvarjanje dnevnika sprememb za tabelo administratorja
+--Ustvarjanje tabele dnevnika sprememb
+CREATE TABLE admin_change_log (
+    log_id SERIAL PRIMARY KEY,
+    change_type VARCHAR(10), -- 'INSERT', 'UPDATE', 'DELETE'
+    admin_id INTEGER,
+    changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    changed_by VARCHAR(50),
+    old_values JSONB,
+    new_values JSONB
+);
+
+--Ustvarjanje funkcije za beleženje sprememb
+CREATE OR REPLACE FUNCTION log_admin_changes()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF (TG_OP = 'INSERT') THEN
+        INSERT INTO admin_change_log(change_type, admin_id, new_values)
+        VALUES ('INSERT', NEW.admin_id, row_to_json(NEW)::jsonb);
+    ELSIF (TG_OP = 'UPDATE') THEN
+        INSERT INTO admin_change_log(change_type, admin_id, old_values, new_values)
+        VALUES ('UPDATE', OLD.admin_id, row_to_json(OLD)::jsonb, row_to_json(NEW)::jsonb);
+    ELSIF (TG_OP = 'DELETE') THEN
+        INSERT INTO admin_change_log(change_type, admin_id, old_values)
+        VALUES ('DELETE', OLD.admin_id, row_to_json(OLD)::jsonb);
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+--Ustvarjanje sprožilcev za klic funkcije za beleženje
+CREATE TRIGGER admin_change_trigger
+AFTER INSERT OR UPDATE OR DELETE ON admin
+FOR EACH ROW EXECUTE FUNCTION log_admin_changes();
+
+--Pregledovanje dnevnika sprememb
+--Ogled vseh sprememb
+SELECT * FROM admin_change_log ORDER BY changed_at DESC;
+
+--Ogled sprememb za določenega administratorja
+SELECT * FROM admin_change_log
+WHERE admin_id = 1
+ORDER BY changed_at DESC;
+
+--Ogled sprememb določene vrste
+SELECT * FROM admin_change_log
+WHERE change_type = 'UPDATE'
+ORDER BY changed_at DESC;
+
+--Pregledovanje sprememb, narejenih v določenem časovnem okviru
+SELECT * FROM admin_change_log
+WHERE changed_at BETWEEN '2024-01-01' AND '2024-06-30'
+ORDER BY changed_at DESC;
+
+
+
