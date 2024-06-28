@@ -723,12 +723,62 @@ FROM manager m
 JOIN role r ON m.role_id = r.role_id
 WHERE r.role_id = 3;
 
+--kot funkcija
+CREATE OR REPLACE FUNCTION GetManagersByRoleId(roleId INT)
+RETURNS TABLE (
+    manager_id INT,
+    manager_name VARCHAR(100),
+    manager_surname VARCHAR(100),
+    manager_address VARCHAR(255),
+    manager_phone VARCHAR(20),
+    manager_pay DECIMAL(10, 2),
+    manager_start_date DATE,
+    role_id INT
+)
+AS
+$$
+BEGIN
+    RETURN QUERY
+    SELECT m.manager_id,
+           m.manager_name,
+           m.manager_surname,
+           m.manager_address,
+           m.manager_phone,
+           m.manager_pay,
+           m.manager_start_date,
+           r.role_id
+    FROM manager m
+    JOIN role r ON m.role_id = r.role_id
+    WHERE r.role_id = roleId;
+END
+$$
+LANGUAGE PLPGSQL;
+
+SELECT * FROM GetManagersByRoleId(3);
+
 --Posodabljanje evidenc posameznih zaposlenih +
 UPDATE manager
 SET manager_pay = 80000,
     manager_phone = '555 9999'
 WHERE manager_id = 1 AND
       role_id = (SELECT role_id FROM role WHERE role_id = 2 );
+
+--Kot funkcija
+CREATE OR REPLACE FUNCTION UpdateManagerPayAndPhone(managerId INT, newPay DECIMAL, newPhone VARCHAR(20))
+RETURNS VOID
+AS
+$$
+BEGIN
+    UPDATE manager
+    SET manager_pay = newPay,
+        manager_phone = newPhone
+    WHERE manager_id = managerId
+      AND role_id = (SELECT role_id FROM role WHERE role_id = 2);
+END
+$$
+LANGUAGE PLPGSQL;
+
+SELECT UpdateManagerPayAndPhone(1, 80000, '555 9999');
 
 --Navedemo vse zaposlene pod vsakim "vodjo urada" in "podpredsednikom" ---
 SELECT sg.staff_group_id,
@@ -744,6 +794,41 @@ JOIN manager m ON sg.manager_id = m.manager_id
 JOIN role r ON m.role_id = r.role_id
 JOIN staff s ON sg.staff_group_id = s.staff_group_id
 WHERE r.role_id IN (3);
+
+--Kot funkcija
+CREATE OR REPLACE FUNCTION GetStaffGroupsByRole()
+RETURNS TABLE (
+    staff_group_id INT,
+    manager_id INT,
+    manager_name VARCHAR(100),
+    manager_surname VARCHAR(100),
+    role_id INT,
+    staff_id INT,
+    staff_name VARCHAR(100),
+    staff_surname VARCHAR(100)
+)
+AS
+$$
+BEGIN
+    RETURN QUERY
+    SELECT sg.staff_group_id,
+           m.manager_id,
+           m.manager_name,
+           m.manager_surname,
+           r.role_id,
+           s.staff_id,
+           s.staff_name,
+           s.staff_surname
+    FROM staff_group sg
+    JOIN manager m ON sg.manager_id = m.manager_id
+    JOIN role r ON m.role_id = r.role_id
+    JOIN staff s ON sg.staff_group_id = s.staff_group_id
+    WHERE r.role_id IN (3);
+END
+$$
+LANGUAGE PLPGSQL;
+
+SELECT * FROM GetStaffGroupsByRole();
 
 --Seznam delavcev v vsaki podružnici +
 SELECT ob.office_branch_id,
@@ -766,6 +851,52 @@ JOIN staff s ON sg.staff_group_id = s.staff_group_id
 JOIN role r ON s.role_id = r.role_id
 ORDER BY ob.office_branch_id, r.role_id, s.staff_name;
 
+--Kot funkcija
+CREATE OR REPLACE FUNCTION GetOfficeBranchStaffDetails()
+RETURNS TABLE (
+    office_branch_id INT,
+    office_city VARCHAR(100),
+    office_municipality VARCHAR(100),
+    office_postcode VARCHAR(20),
+    staff_group_id INT,
+    manager_id INT,
+    manager_first_name VARCHAR(100),
+    manager_last_name VARCHAR(100),
+    staff_id INT,
+    staff_first_name VARCHAR(100),
+    staff_last_name VARCHAR(100),
+    staff_email VARCHAR(255),
+    role_id INT
+)
+AS
+$$
+BEGIN
+    RETURN QUERY
+    SELECT ob.office_branch_id,
+           ob.office_city,
+           ob.office_municipality,
+           ob.office_postcode,
+           sg.staff_group_id,
+           m.manager_id,
+           m.manager_name AS manager_first_name,
+           m.manager_surname AS manager_last_name,
+           s.staff_id,
+           s.staff_name AS staff_first_name,
+           s.staff_surname AS staff_last_name,
+           s.staff_email,
+           r.role_id
+    FROM office_branch ob
+    JOIN staff_group sg ON ob.staff_group_id = sg.staff_group_id
+    JOIN manager m ON sg.manager_id = m.manager_id
+    JOIN staff s ON sg.staff_group_id = s.staff_group_id
+    JOIN role r ON s.role_id = r.role_id
+    ORDER BY ob.office_branch_id, r.role_id, s.staff_name;
+END
+$$
+LANGUAGE PLPGSQL;
+
+SELECT * FROM GetOfficeBranchStaffDetails();
+
 --Število delavcev v vsaki podružnici +
 SELECT ob.office_branch_id,
        ob.office_city,
@@ -776,6 +907,33 @@ JOIN staff s ON sg.staff_group_id = s.staff_group_id
 GROUP BY ob.office_branch_id, ob.office_city
 ORDER BY total_workers DESC;
 
+--Kot funkcija
+CREATE OR REPLACE FUNCTION GetOfficeBranchTotalWorkers()
+RETURNS TABLE (
+    office_branch_id INT,
+    office_city VARCHAR(100),
+    total_workers BIGINT  -- Adjusted to match COUNT(s.staff_id)
+)
+AS
+$$
+BEGIN
+    RETURN QUERY
+    SELECT ob.office_branch_id,
+           ob.office_city,
+           COUNT(s.staff_id) AS total_workers
+    FROM office_branch ob
+    JOIN staff_group sg ON ob.staff_group_id = sg.staff_group_id
+    JOIN staff s ON sg.staff_group_id = s.staff_group_id
+    GROUP BY ob.office_branch_id, ob.office_city
+    ORDER BY total_workers DESC;
+END
+$$
+LANGUAGE PLPGSQL;
+
+DROP FUNCTION getofficebranchtotalworkers();
+
+SELECT * FROM GetOfficeBranchTotalWorkers();
+
 --Povprečna plača delavcev v posamezni panogi +
 SELECT ob.office_branch_id,
        ob.office_city,
@@ -785,6 +943,31 @@ JOIN staff_group sg ON ob.staff_group_id = sg.staff_group_id
 JOIN staff s ON sg.staff_group_id = s.staff_group_id
 GROUP BY ob.office_branch_id, ob.office_city
 ORDER BY average_salary DESC;
+
+--Kot funkcija
+CREATE OR REPLACE FUNCTION GetOfficeBranchAverageSalary()
+RETURNS TABLE (
+    office_branch_id INT,
+    office_city VARCHAR(100),
+    average_salary NUMERIC(15, 2)
+)
+AS
+$$
+BEGIN
+    RETURN QUERY
+    SELECT ob.office_branch_id,
+           ob.office_city,
+           AVG(s.staff_pay) AS average_salary
+    FROM office_branch ob
+    JOIN staff_group sg ON ob.staff_group_id = sg.staff_group_id
+    JOIN staff s ON sg.staff_group_id = s.staff_group_id
+    GROUP BY ob.office_branch_id, ob.office_city
+    ORDER BY average_salary DESC;
+END
+$$
+LANGUAGE PLPGSQL;
+
+SELECT * FROM GetOfficeBranchAverageSalary();
 
 --Podatki o delavcih z njihovimi vlogami v vsaki podružnici +
 SELECT ob.office_branch_id,
@@ -800,6 +983,39 @@ JOIN staff s ON sg.staff_group_id = s.staff_group_id
 JOIN role r ON s.role_id = r.role_id
 ORDER BY ob.office_branch_id, r.role_id, s.staff_name;
 
+--Kot funkcija
+CREATE OR REPLACE FUNCTION GetOfficeBranchStaffDetailsTwo()
+RETURNS TABLE (
+    office_branch_id INT,
+    office_city VARCHAR(100),
+    staff_id INT,
+    staff_name VARCHAR(100),
+    staff_surname VARCHAR(100),
+    staff_email VARCHAR(255),
+    role_id INT
+)
+AS
+$$
+BEGIN
+    RETURN QUERY
+    SELECT ob.office_branch_id,
+           ob.office_city,
+           s.staff_id,
+           s.staff_name,
+           s.staff_surname,
+           s.staff_email,
+           r.role_id
+    FROM office_branch ob
+    JOIN staff_group sg ON ob.staff_group_id = sg.staff_group_id
+    JOIN staff s ON sg.staff_group_id = s.staff_group_id
+    JOIN role r ON s.role_id = r.role_id
+    ORDER BY ob.office_branch_id, r.role_id, s.staff_name;
+END
+$$
+LANGUAGE PLPGSQL;
+
+SELECT * FROM GetOfficeBranchStaffDetailsTwo();
+
 --Porazdelitev plač po panogah +
 SELECT ob.office_branch_id,
        ob.office_city,
@@ -810,6 +1026,35 @@ FROM office_branch ob
 JOIN staff_group sg ON ob.staff_group_id = sg.staff_group_id
 JOIN staff s ON sg.staff_group_id = s.staff_group_id
 ORDER BY ob.office_branch_id, s.staff_pay DESC;
+
+--Kot funkcija
+CREATE OR REPLACE FUNCTION GetOfficeBranchStaffSalaries()
+RETURNS TABLE (
+    office_branch_id INT,
+    office_city VARCHAR(100),
+    staff_name VARCHAR(100),
+    staff_surname VARCHAR(100),
+    staff_pay DECIMAL(10, 2)
+)
+AS
+$$
+BEGIN
+    RETURN QUERY
+    SELECT ob.office_branch_id,
+           ob.office_city,
+           s.staff_name,
+           s.staff_surname,
+           s.staff_pay::DECIMAL(10, 2)
+    FROM office_branch ob
+    JOIN staff_group sg ON ob.staff_group_id = sg.staff_group_id
+    JOIN staff s ON sg.staff_group_id = s.staff_group_id
+    ORDER BY ob.office_branch_id, s.staff_pay DESC;
+END
+$$
+LANGUAGE PLPGSQL;
+
+
+SELECT * FROM GetOfficeBranchStaffSalaries();
 
 --Podrobno poročilo za določeno podružnico +
 SELECT ob.office_branch_id,
@@ -830,8 +1075,55 @@ JOIN staff_group sg ON ob.staff_group_id = sg.staff_group_id
 JOIN manager m ON sg.manager_id = m.manager_id
 JOIN staff s ON sg.staff_group_id = s.staff_group_id
 JOIN role r ON s.role_id = r.role_id
-WHERE ob.office_branch_id = 1 -- Replace with the specific office_branch_id
+WHERE ob.office_branch_id = 1
 ORDER BY s.staff_name;
+
+--Kot funkcija
+CREATE OR REPLACE FUNCTION GetOfficeBranchStaffDetails(office_branch_id_param INT)
+RETURNS TABLE (
+    office_branch_id INT,
+    office_city VARCHAR(100),
+    office_municipality VARCHAR(100),
+    office_postcode VARCHAR(20),
+    manager_first_name VARCHAR(100),
+    manager_last_name VARCHAR(100),
+    role_id INT,
+    staff_id INT,
+    staff_first_name VARCHAR(100),
+    staff_last_name VARCHAR(100),
+    staff_email VARCHAR(255),
+    staff_pay DECIMAL(10, 2),  -- Adjust precision and scale as per your actual data
+    staff_start_date DATE
+)
+AS
+$$
+BEGIN
+    RETURN QUERY
+    SELECT ob.office_branch_id,
+           ob.office_city,
+           ob.office_municipality,
+           ob.office_postcode,
+           m.manager_name AS manager_first_name,
+           m.manager_surname AS manager_last_name,
+           r.role_id,
+           s.staff_id,
+           s.staff_name AS staff_first_name,
+           s.staff_surname AS staff_last_name,
+           s.staff_email,
+           s.staff_pay::DECIMAL(10, 2),  -- Ensure staff_pay is cast to the correct type
+           s.staff_start_date
+    FROM office_branch ob
+    JOIN staff_group sg ON ob.staff_group_id = sg.staff_group_id
+    JOIN manager m ON sg.manager_id = m.manager_id
+    JOIN staff s ON sg.staff_group_id = s.staff_group_id
+    JOIN role r ON s.role_id = r.role_id
+    WHERE ob.office_branch_id = office_branch_id_param
+    ORDER BY s.staff_name;
+END
+$$
+LANGUAGE PLPGSQL;
+
+SELECT * FROM GetOfficeBranchStaffDetails(1);
 
 --Seznam delavcev v skupini z njihovim vodjo +
 SELECT
